@@ -1,9 +1,7 @@
-import { UserButton } from '@clerk/clerk-react'
-
 const Home = () => {
   return (
     <div>
-      <UserButton />
+      <h1 className='head-text text-left'>Home</h1>
     </div>
   )
 }
