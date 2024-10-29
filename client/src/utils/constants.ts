@@ -1,31 +1,38 @@
+import Home from '@/assets/home.svg'
+import Search from '@/assets/search.svg'
+import Heart from '@/assets/heart.svg'
+import Create from '@/assets/create.svg'
+import Community from '@/assets/community.svg'
+import User from '@/assets/user.svg'
+
 export const sidebarLinks = [
   {
-    imgURL: '/assets/home.svg',
+    imgURL: Home,
     route: '/',
     label: 'Home'
   },
   {
-    imgURL: '/assets/search.svg',
+    imgURL: Search,
     route: '/search',
     label: 'Search'
   },
   {
-    imgURL: '/assets/heart.svg',
+    imgURL: Heart,
     route: '/activity',
     label: 'Activity'
   },
   {
-    imgURL: '/assets/create.svg',
+    imgURL: Create,
     route: '/create-thread',
     label: 'Create Thread'
   },
   {
-    imgURL: '/assets/community.svg',
+    imgURL: Community,
     route: '/communities',
     label: 'Communities'
   },
   {
-    imgURL: '/assets/user.svg',
+    imgURL: User,
     route: '/profile',
     label: 'Profile'
   }
