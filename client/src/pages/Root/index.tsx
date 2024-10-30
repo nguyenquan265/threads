@@ -9,7 +9,7 @@ const Layout = () => {
     <>
       <Header />
 
-      <main>
+      <main className='flex flex-row'>
         <LeftSidebar />
 
         <section className='main-container'>
