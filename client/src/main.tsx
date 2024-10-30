@@ -17,9 +17,7 @@ createRoot(document.getElementById('root')!).render(
     afterSignOutUrl='/sign-in'
     signInUrl='/sign-in'
     signUpUrl='/sign-up'
-    // tam thoi sau khi sign in se redirect ve trang chu
-    // signInFallbackRedirectUrl='/onboarding'
-    signInFallbackRedirectUrl='/'
+    signInFallbackRedirectUrl='/onboarding'
     signUpFallbackRedirectUrl='/sign-in'
   >
     <App />

@@ -24,7 +24,7 @@ const LeftSidebar = () => {
 
       <div className='mt-10 px-6'>
         <SignedIn>
-          <SignOutButton>
+          <SignOutButton redirectUrl='/sign-in'>
             <div className='flex cursor-pointer gap-4 p-4'>
               <img src={LogOut} alt='logout' width={24} height={24} />
               <p className='text-light-2 max-lg:hidden'>Logout</p>

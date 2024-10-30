@@ -14,7 +14,7 @@ const Header = () => {
       <div className='flex items-center gap-1'>
         <div className='block md:hidden'>
           <SignedIn>
-            <SignOutButton>
+            <SignOutButton redirectUrl='/sign-in'>
               <div className='flex cursor-pointer'>
                 <img src={LogOut} alt='logout' width={24} height={24} />
               </div>
