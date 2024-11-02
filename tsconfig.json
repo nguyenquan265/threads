@@ -10,14 +10,14 @@
     "baseUrl": ".", // Đường dẫn base cho các import
     "paths": {
       "@/*": [
-        "api/*"
+        "server/*"
       ] // Đường dẫn tương đối cho các import (alias)
     }
   },
   "files": [
-    "api/type.d.ts"
+    "server/type.d.ts"
   ], // Các file dùng để defined global type cho dự án
   "include": [
-    "api/**/*"
+    "server/**/*"
   ] // Đường dẫn include cho các file cần build
 }
