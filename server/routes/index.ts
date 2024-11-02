@@ -1,8 +1,8 @@
 import { Router } from 'express'
-// import userRouter from './user.route'
+import uploadRouter from './upload'
 
 const router = Router()
 
-// router.use('/users', userRouter)
+router.use('/upload', uploadRouter)
 
 export default router
