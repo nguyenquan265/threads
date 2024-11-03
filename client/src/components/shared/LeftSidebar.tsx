@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { sidebarLinks } from '@/utils/constants'
+import { sidebarLinks } from '@/helpers/constants'
 import { SignOutButton, SignedIn } from '@clerk/clerk-react'
 import LogOut from '@/assets/logout.svg'
 

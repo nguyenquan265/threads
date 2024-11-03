@@ -1,4 +1,4 @@
-import { sidebarLinks } from '@/utils/constants'
+import { sidebarLinks } from '@/helpers/constants'
 import { Link, useLocation } from 'react-router-dom'
 
 // Use as mobile navigation
