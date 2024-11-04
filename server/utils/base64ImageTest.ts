@@ -1,5 +1,5 @@
 export const checkBase64Image = (base64String: string) => {
-  const base64ImagePattern = /^data:image\/(png|jpeg|jpg|gif|webp);base64,[A-Za-z0-9+/=]+$/
+  const base64ImagePattern = /^data:image\/(png|jpg|jpeg|gif|webp);base64,/
 
   return base64ImagePattern.test(base64String)
 }
