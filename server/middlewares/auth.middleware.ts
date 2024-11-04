@@ -1,38 +1,41 @@
+import ApiError from '@/utils/ApiError'
+import asyncHandler from '@/utils/asyncHandler'
 import { NextFunction, Request, Response } from 'express'
 
-// export const authenticate = (req: Request, res: Response, next: NextFunction) => {
-//   const auth = getAuth(req)
+export const authenticate = asyncHandler((req: Request, res: Response, next: NextFunction) => {
+  if (!req.auth?.userId) {
+    throw new ApiError(401, 'You must be logged in to access this resource')
+  }
 
-//   if (!auth.userId) {
-//     next(new ApiError(401, 'You must be logged in to access this resource'))
-//   }
+  return next()
+})
 
-//   req.auth = auth
-//   next()
-// }
+export const restrictTo = (...roles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const auth = req.auth
 
-// export const restrictTo = (...roles: string[]) => {
-//   return (req: Request, res: Response, next: NextFunction) => {
-//     const auth = getAuth(req)
+    if (auth) {
+      roles.forEach((role) => {
+        if (!auth.has({ permission: `org:${role}` })) {
+          throw new ApiError(403, 'You do not have permission to access this resource')
+        }
+      })
+    }
 
-//     console.log(auth)
-
-//     if (!auth.has({ permission: `org:admin` })) {
-//       throw new ApiError(403, 'You do not have permission to access this resource')
-//     }
-
-//     next()
-//   }
-// }
+    next()
+  }
+}
 
 export const hasResourcePermission = (req: Request, resourceId: string) => {
-  if (!req.auth) {
+  const auth = req.auth
+
+  if (!auth) {
     return false
   }
 
-  if (req.auth.has({ permission: 'org:admin' })) {
+  if (auth.has({ permission: 'org:admin' })) {
     return true
   }
 
-  return req.auth.userId === resourceId
+  return auth.userId === resourceId
 }
