@@ -1,5 +1,4 @@
 import express, { NextFunction, Request, Response } from 'express'
-import { clerkMiddleware } from '@clerk/express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import ApiError from './utils/ApiError'
@@ -10,11 +9,15 @@ import path from 'path'
 const app = express()
 const dirname = path.resolve()
 
-app.use(cors())
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+  })
+)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(clerkMiddleware())
 
 app.get('/health', (req: Request, res: Response) => {
   res.send({ message: 'Server is running' })
