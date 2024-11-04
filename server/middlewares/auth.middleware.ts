@@ -2,7 +2,7 @@ import ApiError from '@/utils/ApiError'
 import { getAuth } from '@clerk/express'
 import { NextFunction, Request, Response } from 'express'
 
-const hasPermission = (req: Request, res: Response, next: NextFunction) => {
+const hasAdminPermission = (req: Request, res: Response, next: NextFunction) => {
   const auth = getAuth(req)
 
   if (!auth.has({ permission: 'org:admin' })) {
@@ -12,4 +12,4 @@ const hasPermission = (req: Request, res: Response, next: NextFunction) => {
   return next()
 }
 
-export default hasPermission
+export default hasAdminPermission
