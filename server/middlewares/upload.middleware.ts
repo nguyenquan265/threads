@@ -1,4 +1,6 @@
-import { Request } from 'express'
+import ApiError from '@/utils/ApiError'
+import { checkBase64Image, getBase64Size } from '@/utils/base64ImageTest'
+import { NextFunction, Request, Response } from 'express'
 import multer, { FileFilterCallback } from 'multer'
 
 const storage = multer.memoryStorage()
@@ -11,7 +13,7 @@ const multerFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCal
   }
 }
 
-const uploader = multer({
+export const multerUploader = multer({
   storage,
   limits: {
     fileSize: 1024 * 1024 * 5
@@ -19,4 +21,26 @@ const uploader = multer({
   fileFilter: multerFilter
 })
 
-export default uploader
+interface UploadBase64ImageRequest extends Request {
+  body: {
+    image: string
+  }
+}
+
+export const base64ImageUploader = (req: UploadBase64ImageRequest, res: Response, next: NextFunction) => {
+  const image = req.body.image
+
+  if (!image) {
+    next(new ApiError(400, 'Please provide a base64 image'))
+  }
+
+  if (!checkBase64Image(image)) {
+    next(new ApiError(400, 'Please provide a valid base64 image'))
+  }
+
+  if (getBase64Size(image) > 5) {
+    next(new ApiError(400, 'Image size must be less than 5MB'))
+  }
+
+  next()
+}
