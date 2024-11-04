@@ -3,14 +3,14 @@ import { useMutation } from 'react-query'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export const useUploadImage = () => {
-  const createUploadImageRequest = async (base64Image: string): Promise<string> => {
-    const res = await fetch(`${API_BASE_URL}/api/v1/upload`, {
+  const createUploadImageRequest = async (imageFileData: FormData): Promise<string> => {
+    const res = await fetch(`${API_BASE_URL}/api/v1/upload/imageFile`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data'
       },
       credentials: 'include',
-      body: JSON.stringify({ base64Image })
+      body: imageFileData
     })
 
     if (!res.ok) {
