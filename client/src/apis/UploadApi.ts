@@ -1,13 +1,19 @@
+import { useAuth } from '@clerk/clerk-react'
 import { useMutation } from 'react-query'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export const useUploadImage = () => {
+  const { getToken } = useAuth()
+
   const createUploadImageRequest = async (imageFileData: FormData): Promise<string> => {
+    const token = await getToken()
+
     const res = await fetch(`${API_BASE_URL}/api/v1/upload/imageFile`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`
       },
       credentials: 'include',
       body: imageFileData
@@ -20,7 +26,7 @@ export const useUploadImage = () => {
     return res.json()
   }
 
-  const { mutate: startUpload, isLoading, isError, error } = useMutation(createUploadImageRequest)
+  const { mutateAsync: startUpload, isLoading, isError, error } = useMutation(createUploadImageRequest)
 
   if (isError) {
     console.error(error)
