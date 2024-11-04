@@ -1,4 +1,4 @@
-import { Schema, Document, model, Types } from 'mongoose'
+import { Schema, Document, model, Types, models } from 'mongoose'
 
 interface ICommunity extends Document {
   _id: Types.ObjectId
@@ -44,6 +44,6 @@ const communitySchema = new Schema<ICommunity>(
   { timestamps: true }
 )
 
-const Community = model<ICommunity>('Community', communitySchema)
+const Community = models.Community || model<ICommunity>('Community', communitySchema)
 
 export default Community

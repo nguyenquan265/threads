@@ -1,4 +1,4 @@
-import { Schema, Document, model, Types } from 'mongoose'
+import { Schema, Document, model, Types, models } from 'mongoose'
 
 interface IThread extends Document {
   _id: Types.ObjectId
@@ -37,6 +37,6 @@ const threadSchema = new Schema<IThread>(
   { timestamps: true }
 )
 
-const Thread = model<IThread>('Thread', threadSchema)
+const Thread = models.Thread || model<IThread>('Thread', threadSchema)
 
 export default Thread
