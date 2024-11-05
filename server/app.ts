@@ -9,12 +9,13 @@ import router from './routes'
 const app = express()
 // const dirname = path.resolve()
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true
-  })
-)
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_URL,
+//     credentials: true
+//   })
+// )
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
