@@ -4,10 +4,10 @@ import cookieParser from 'cookie-parser'
 import ApiError from './utils/ApiError'
 import errorHandler from './middlewares/error.middleware'
 import router from './routes'
-import path from 'path'
+// import path from 'path'
 
 const app = express()
-const dirname = path.resolve()
+// const dirname = path.resolve()
 
 app.use(
   cors({
@@ -27,13 +27,13 @@ app.use('/api/*', (req: Request, res: Response, next: NextFunction) => {
   next(new ApiError(404, `Can't find ${req.originalUrl} on this server!`))
 })
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(dirname, '/client/dist')))
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(dirname, '/client/dist')))
 
-  app.get('*', (req: Request, res: Response) => {
-    res.sendFile(path.resolve(dirname, 'client', 'dist', 'index.html'))
-  })
-}
+//   app.get('*', (req: Request, res: Response) => {
+//     res.sendFile(path.resolve(dirname, 'client', 'dist', 'index.html'))
+//   })
+// }
 
 app.use(errorHandler)
 
