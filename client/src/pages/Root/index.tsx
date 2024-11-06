@@ -2,7 +2,7 @@ import Footer from '@/components/shared/Footer'
 import Header from '@/components/shared/Header'
 import LeftSidebar from '@/components/shared/LeftSidebar'
 import RightSidebar from '@/components/shared/RightSidebar'
-import { ClerkProvider } from '@clerk/clerk-react'
+import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
 import { Outlet } from 'react-router-dom'
 import { dark } from '@clerk/themes'
 
@@ -23,21 +23,27 @@ const RootLayout = () => {
       signInFallbackRedirectUrl='/onboarding'
       signUpFallbackRedirectUrl='/sign-in'
     >
-      <Header />
+      <SignedIn>
+        <Header />
 
-      <main className='flex flex-row'>
-        <LeftSidebar />
+        <main className='flex flex-row'>
+          <LeftSidebar />
 
-        <section className='main-container'>
-          <div className='w-full max-w-4xl'>
-            <Outlet />
-          </div>
-        </section>
+          <section className='main-container'>
+            <div className='w-full max-w-4xl'>
+              <Outlet />
+            </div>
+          </section>
 
-        <RightSidebar />
-      </main>
+          <RightSidebar />
+        </main>
 
-      <Footer />
+        <Footer />
+      </SignedIn>
+
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
     </ClerkProvider>
   )
 }
