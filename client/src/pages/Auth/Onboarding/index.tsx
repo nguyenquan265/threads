@@ -2,6 +2,7 @@ import { useGetUser } from '@/apis/UserApi'
 import AccountProfileForm from '@/components/forms/AccountProfileForm'
 import Loader from '@/components/shared/Loader'
 import { useUser } from '@clerk/clerk-react'
+import { Navigate } from 'react-router-dom'
 
 const OnboardingPage = () => {
   const { isSignedIn, user, isLoaded } = useUser()
@@ -16,11 +17,11 @@ const OnboardingPage = () => {
   }
 
   if (userInfo && userInfo.onboarded) {
-    window.location.href = '/'
+    return <Navigate to='/' />
   }
 
   if (!isSignedIn || !user) {
-    window.location.href = '/sign-in'
+    return <Navigate to='/sign-in' />
   }
 
   const userData = {
