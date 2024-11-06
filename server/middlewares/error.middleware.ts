@@ -1,4 +1,3 @@
-// import ApiError from '@/utils/ApiError'
 import { NextFunction, Request, Response } from 'express'
 import { Error as MongoError } from 'mongoose'
 import ApiError from '../utils/ApiError'

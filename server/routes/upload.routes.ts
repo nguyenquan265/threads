@@ -1,6 +1,3 @@
-// import { uploadBase64Image, uploadImageFile } from '@/controllers/upload.controller'
-// import { authenticate } from '@/middlewares/auth.middleware'
-// import { base64ImageUploader, multerUploader } from '@/middlewares/upload.middleware'
 import { clerkMiddleware } from '@clerk/express'
 import { Router } from 'express'
 import { authenticate } from '../middlewares/auth.middleware'
