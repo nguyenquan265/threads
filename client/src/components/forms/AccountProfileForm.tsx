@@ -9,6 +9,8 @@ import { Textarea } from '../ui/textarea'
 import { useState } from 'react'
 import isBase64Image from '@/helpers/isBase64Image'
 import { useUploadImage } from '@/apis/UploadApi'
+import { useUpdateUser } from '@/apis/UserApi'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const accountProfileSchema = z.object({
   profile_photo: z.string().url().min(1),
@@ -17,11 +19,11 @@ const accountProfileSchema = z.object({
   bio: z.string().min(3, { message: 'Minimum 3 characters.' }).max(1000, { message: 'Maximum 1000 caracters.' })
 })
 
-type AccountProfileData = z.infer<typeof accountProfileSchema>
+export type AccountProfileData = z.infer<typeof accountProfileSchema>
 
 type Props = {
   user: {
-    id: string
+    clerkId: string
     objectId: string
     username: string
     name: string
@@ -33,7 +35,10 @@ type Props = {
 
 const AccountProfileForm = ({ user, btnTitle }: Props) => {
   const [files, setFiles] = useState<File[]>([])
-  const { startUpload } = useUploadImage()
+  const { startUpload, isLoading: isImageUploading } = useUploadImage()
+  const { updateUser, isLoading } = useUpdateUser()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const form = useForm<AccountProfileData>({
     resolver: zodResolver(accountProfileSchema),
@@ -71,21 +76,27 @@ const AccountProfileForm = ({ user, btnTitle }: Props) => {
     }
   }
 
-  const onSubmit = (values: AccountProfileData) => {
-    const blob = values.profile_photo
-
-    const isImageChanged = isBase64Image(blob)
+  const onSubmit = async (values: AccountProfileData) => {
+    const isImageChanged = isBase64Image(values.profile_photo)
 
     if (isImageChanged) {
       const formData = new FormData()
       formData.append('image', files[0])
 
-      const imageRes = startUpload(formData)
+      const imageRes = await startUpload(formData)
 
-      console.log(imageRes)
+      if (imageRes) {
+        values.profile_photo = imageRes
+      }
     }
 
-    // TODO: Update user profile
+    await updateUser(values)
+
+    if (location.pathname === '/profile/edit') {
+      navigate(-1) // Quay lại trang trước đó
+    } else {
+      navigate('/') // Điều hướng đến trang chủ
+    }
   }
 
   return (
@@ -162,7 +173,7 @@ const AccountProfileForm = ({ user, btnTitle }: Props) => {
         />
 
         <Button type='submit' className='bg-primary-500'>
-          {btnTitle}
+          {isImageUploading || isLoading ? 'Loading...' : btnTitle}
         </Button>
       </form>
     </Form>

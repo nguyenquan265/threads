@@ -20,7 +20,7 @@ const OnboardingPage = () => {
   }
 
   const userData = {
-    id: user.id,
+    clerkId: user.id,
     objectId: userInfo?._id,
     username: userInfo?.username || user.username,
     name: userInfo?.name || user.firstName || '',

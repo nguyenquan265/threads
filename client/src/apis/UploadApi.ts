@@ -12,7 +12,6 @@ export const useUploadImage = () => {
     const res = await fetch(`${API_BASE_URL}/api/v1/upload/imageFile`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${token}`
       },
       credentials: 'include',
