@@ -1,8 +1,12 @@
-import { hasResourcePermission } from '@/middlewares/auth.middleware'
-import User from '@/models/user.model'
-import ApiError from '@/utils/ApiError'
-import asyncHandler from '@/utils/asyncHandler'
+// import { hasResourcePermission } from '@/middlewares/auth.middleware'
+// import User from '@/models/user.model'
+// import ApiError from '@/utils/ApiError'
+// import asyncHandler from '@/utils/asyncHandler'
 import { NextFunction, Request, Response } from 'express'
+import asyncHandler from '../utils/asyncHandler'
+import { hasResourcePermission } from '../middlewares/auth.middleware'
+import ApiError from '../utils/ApiError'
+import User from '../models/user.model'
 
 interface UpdateUserRequest extends Request {
   body: {

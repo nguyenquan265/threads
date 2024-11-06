@@ -1,6 +1,8 @@
-import cloudinary from '@/config/cloudinary'
-import asyncHandler from '@/utils/asyncHandler'
+// import cloudinary from '@/config/cloudinary'
+// import asyncHandler from '@/utils/asyncHandler'
 import { NextFunction, Request, Response } from 'express'
+import asyncHandler from '../utils/asyncHandler'
+import cloudinary from '../config/cloudinary'
 
 interface UploadBase64ImageRequest extends Request {
   body: {

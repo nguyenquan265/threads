@@ -7,12 +7,12 @@
     "esModuleInterop": true,
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    "baseUrl": ".", // Đường dẫn base cho các import
-    "paths": {
-      "@/*": [
-        "server/*"
-      ] // Đường dẫn tương đối cho các import (alias)
-    }
+    // "baseUrl": ".", // Đường dẫn base cho các import
+    // "paths": {
+    //   "@/*": [
+    //     "server/*"
+    //   ] // Đường dẫn tương đối cho các import (alias)
+    // }
   },
   "files": [
     "server/type.d.ts"

@@ -1,6 +1,7 @@
-import ApiError from '@/utils/ApiError'
+// import ApiError from '@/utils/ApiError'
 import { NextFunction, Request, Response } from 'express'
 import { Error as MongoError } from 'mongoose'
+import ApiError from '../utils/ApiError'
 
 const errorHandler = (error: unknown, req: Request, res: Response, next: NextFunction) => {
   let errorCode = 500
