@@ -1,12 +1,13 @@
+import { useGetUser } from '@/apis/UserApi'
 import AccountProfileForm from '@/components/forms/AccountProfileForm'
 import Loader from '@/components/shared/Loader'
 import { useUser } from '@clerk/clerk-react'
 
 const OnboardingPage = () => {
   const { isSignedIn, user, isLoaded } = useUser()
-  const userInfo = {}
+  const { data: userInfo, isLoading } = useGetUser()
 
-  if (!isLoaded) {
+  if (!isLoaded || isLoading) {
     return (
       <div className='bg-dark-1 min-h-screen w-full flex items-center justify-center'>
         <Loader />
@@ -14,18 +15,21 @@ const OnboardingPage = () => {
     )
   }
 
+  if (userInfo && userInfo.onboarded) {
+    window.location.href = '/'
+  }
+
   if (!isSignedIn || !user) {
     window.location.href = '/sign-in'
-    return null
   }
 
   const userData = {
-    clerkId: user.id,
-    objectId: userInfo?._id,
-    username: userInfo?.username || user.username,
-    name: userInfo?.name || user.firstName || '',
-    bio: userInfo?.bio || '',
-    image: userInfo?.image || user.imageUrl
+    clerkId: user?.id || '',
+    objectId: userInfo?._id || '',
+    username: userInfo ? userInfo.username : (user?.username ?? ''),
+    name: userInfo ? userInfo.name : (user?.firstName ?? ''),
+    bio: userInfo ? userInfo.bio : '',
+    image: userInfo ? userInfo.image : (user?.imageUrl ?? '')
   }
 
   return (

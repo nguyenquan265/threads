@@ -1,6 +1,6 @@
 import { AccountProfileData } from '@/components/forms/AccountProfileForm'
 import { useAuth } from '@clerk/clerk-react'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -27,11 +27,35 @@ export const useUpdateUser = () => {
     return res.json()
   }
 
-  const { mutateAsync: updateUser, isLoading, isError, error } = useMutation(createUpdateUserRequest)
-
-  if (isError) {
-    console.error(error)
-  }
+  const { mutateAsync: updateUser, isLoading } = useMutation(createUpdateUserRequest)
 
   return { updateUser, isLoading }
+}
+
+type User = {
+  _id: string
+  clerkId: string
+  username: string
+  name: string
+  bio: string
+  image: string
+  onboarded: boolean
+}
+
+export const useGetUser = () => {
+  const { userId } = useAuth()
+
+  const createGetUserRequest = async (): Promise<User> => {
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/${userId}`)
+
+    if (!res.ok) {
+      throw new Error('Failed to get user')
+    }
+
+    return res.json()
+  }
+
+  const { data, isLoading } = useQuery(['user', userId], createGetUserRequest)
+
+  return { data, isLoading }
 }

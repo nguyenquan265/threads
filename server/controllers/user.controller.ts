@@ -37,3 +37,15 @@ export const updateUser = asyncHandler(async (req: UpdateUserRequest, res: Respo
     data: user
   })
 })
+
+export const getUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const { clerkId } = req.params
+
+  const user = await User.findOne({ clerkId })
+
+  if (!user) {
+    throw new ApiError(404, 'User not found')
+  }
+
+  res.status(200).json(user)
+})

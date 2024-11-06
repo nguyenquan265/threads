@@ -25,11 +25,7 @@ export const useUploadImage = () => {
     return res.json()
   }
 
-  const { mutateAsync: startUpload, isLoading, isError, error } = useMutation(createUploadImageRequest)
-
-  if (isError) {
-    console.error(error)
-  }
+  const { mutateAsync: startUpload, isLoading } = useMutation(createUploadImageRequest)
 
   return { startUpload, isLoading }
 }
