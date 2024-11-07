@@ -5,6 +5,7 @@ import Home from './pages/Root/Home'
 import SignInPage from './pages/Auth/SignIn'
 import SignUpPage from './pages/Auth/SignUp'
 import OnboardingPage from './pages/Auth/Onboarding'
+import CreateThreadPage from './pages/Root/CreateThread'
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: '/create-thread',
+        element: <CreateThreadPage />
       }
     ]
   },

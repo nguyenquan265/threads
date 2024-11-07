@@ -42,11 +42,9 @@ type User = {
   onboarded: boolean
 }
 
-export const useGetUser = () => {
-  const { userId } = useAuth()
-
+export const useGetUser = (clerkId: string) => {
   const createGetUserRequest = async (): Promise<User> => {
-    const res = await fetch(`${API_BASE_URL}/api/v1/users/${userId}`)
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/${clerkId}`)
 
     if (!res.ok) {
       throw new Error('Failed to get user')
@@ -55,7 +53,7 @@ export const useGetUser = () => {
     return res.json()
   }
 
-  const { data, isLoading } = useQuery(['user', userId], createGetUserRequest)
+  const { data, isLoading } = useQuery(['user', clerkId], createGetUserRequest)
 
   return { data, isLoading }
 }
