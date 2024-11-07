@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 app.get('/health', (req: Request, res: Response) => {
-  res.json(200).send({ message: 'Server is running' })
+  res.status(200).send({ message: 'Server is running' })
 })
 app.use('/api/v1', router)
 app.use('/api/*', (req: Request, res: Response, next: NextFunction) => {
