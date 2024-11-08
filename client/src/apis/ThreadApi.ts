@@ -1,6 +1,6 @@
 import { PostThreadData } from '@/components/forms/PostThreadForm'
 import { useAuth } from '@clerk/clerk-react'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -27,7 +27,9 @@ export const usePostThread = () => {
     return res.json()
   }
 
-  const { mutateAsync: postThread, isLoading } = useMutation('postThread', createPostThreadRequest)
+  const { mutateAsync: postThread, isPending } = useMutation({
+    mutationFn: createPostThreadRequest
+  })
 
-  return { postThread, isLoading }
+  return { postThread, isPending }
 }

@@ -35,8 +35,8 @@ type Props = {
 
 const AccountProfileForm = ({ user, btnTitle }: Props) => {
   const [files, setFiles] = useState<File[]>([])
-  const { startUpload, isLoading: isImageUploading } = useUploadImage()
-  const { updateUser, isLoading } = useUpdateUser()
+  const { startUpload, isPending: isImageUploading } = useUploadImage()
+  const { updateUser, isPending: isUserUpdating } = useUpdateUser()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -173,7 +173,7 @@ const AccountProfileForm = ({ user, btnTitle }: Props) => {
         />
 
         <Button type='submit' className='bg-primary-500'>
-          {isImageUploading || isLoading ? 'Loading...' : btnTitle}
+          {isImageUploading || isUserUpdating ? 'Loading...' : btnTitle}
         </Button>
       </form>
     </Form>

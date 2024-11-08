@@ -22,7 +22,7 @@ type Props = {
 }
 
 const PostThreadForm = ({ userObjectId }: Props) => {
-  const { postThread, isLoading } = usePostThread()
+  const { postThread, isPending } = usePostThread()
   const { organization } = useOrganization()
   const navigate = useNavigate()
 
@@ -64,7 +64,7 @@ const PostThreadForm = ({ userObjectId }: Props) => {
         />
 
         <Button type='submit' className='bg-primary-500'>
-          {isLoading ? 'Posting...' : 'Post Thread'}
+          {isPending ? 'Posting...' : 'Post Thread'}
         </Button>
       </form>
     </Form>

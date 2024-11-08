@@ -1,5 +1,5 @@
 import { useAuth } from '@clerk/clerk-react'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -25,7 +25,9 @@ export const useUploadImage = () => {
     return res.json()
   }
 
-  const { mutateAsync: startUpload, isLoading } = useMutation(createUploadImageRequest)
+  const { mutateAsync: startUpload, isPending } = useMutation({
+    mutationFn: createUploadImageRequest
+  })
 
-  return { startUpload, isLoading }
+  return { startUpload, isPending }
 }

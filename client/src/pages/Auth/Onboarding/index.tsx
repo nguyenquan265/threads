@@ -6,7 +6,7 @@ import { Navigate } from 'react-router-dom'
 
 const OnboardingPage = () => {
   const { isSignedIn, user, isLoaded } = useUser()
-  const { data: userInfo, isLoading } = useGetUser(user ? user.id : '')
+  const { data: userInfo, isLoading } = useGetUser()
 
   if (!isLoaded || isLoading) {
     return (

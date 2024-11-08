@@ -6,7 +6,7 @@ import { Navigate } from 'react-router-dom'
 
 const CreateThreadPage = () => {
   const { user, isLoaded, isSignedIn } = useUser()
-  const { data: userInfo, isLoading } = useGetUser(user ? user.id : '')
+  const { data: userInfo, isLoading } = useGetUser()
 
   if (!isLoaded || isLoading) {
     return (

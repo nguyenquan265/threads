@@ -1,6 +1,6 @@
 import { AccountProfileData } from '@/components/forms/AccountProfileForm'
 import { useAuth } from '@clerk/clerk-react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -27,9 +27,11 @@ export const useUpdateUser = () => {
     return res.json()
   }
 
-  const { mutateAsync: updateUser, isLoading } = useMutation(createUpdateUserRequest)
+  const { mutateAsync: updateUser, isPending } = useMutation({
+    mutationFn: createUpdateUserRequest
+  })
 
-  return { updateUser, isLoading }
+  return { updateUser, isPending }
 }
 
 type User = {
@@ -42,7 +44,9 @@ type User = {
   onboarded: boolean
 }
 
-export const useGetUser = (clerkId: string) => {
+export const useGetUser = () => {
+  const { userId: clerkId } = useAuth()
+
   const createGetUserRequest = async (): Promise<User> => {
     const res = await fetch(`${API_BASE_URL}/api/v1/users/${clerkId}`)
 
@@ -53,7 +57,11 @@ export const useGetUser = (clerkId: string) => {
     return res.json()
   }
 
-  const { data, isLoading } = useQuery(['user', clerkId], createGetUserRequest)
+  const { data, isLoading } = useQuery({
+    queryKey: ['user', clerkId],
+    queryFn: createGetUserRequest,
+    enabled: !!clerkId
+  })
 
   return { data, isLoading }
 }
