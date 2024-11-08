@@ -17,6 +17,7 @@ const AuthLayout = () => {
       signInUrl='/sign-in'
       signUpUrl='/sign-up'
       signInFallbackRedirectUrl='/onboarding'
+      signUpFallbackRedirectUrl='/sign-in'
     >
       <Outlet />
     </ClerkProvider>
