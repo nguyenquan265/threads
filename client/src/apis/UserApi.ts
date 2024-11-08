@@ -15,12 +15,12 @@ type User = {
 }
 
 export const useUpdateUser = () => {
-  const { getToken, userId } = useAuth()
+  const { getToken, userId: clerkId } = useAuth()
 
   const createUpdateUserRequest = async (userData: AccountProfileData): Promise<User> => {
     const token = await getToken()
 
-    const res = await fetch(`${API_BASE_URL}/api/v1/users/${userId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/${clerkId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
