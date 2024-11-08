@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import RootLayout from './pages/Root'
-import AuthLayout from './pages/Auth'
+import RootLayout from './pages/Root/layout'
+import AuthLayout from './pages/Auth/layout'
 import Home from './pages/Root/Home'
 import SignInPage from './pages/Auth/SignIn'
 import SignUpPage from './pages/Auth/SignUp'

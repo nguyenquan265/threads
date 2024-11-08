@@ -2,9 +2,10 @@ import Footer from '@/components/shared/Footer'
 import Header from '@/components/shared/Header'
 import LeftSidebar from '@/components/shared/LeftSidebar'
 import RightSidebar from '@/components/shared/RightSidebar'
-import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
+import { ClerkProvider } from '@clerk/clerk-react'
 import { Outlet } from 'react-router-dom'
 import { dark } from '@clerk/themes'
+import ProtectedRoute from '@/components/common/ProtectedRoute'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -20,10 +21,8 @@ const RootLayout = () => {
       afterSignOutUrl='/sign-in'
       signInUrl='/sign-in'
       signUpUrl='/sign-up'
-      signInFallbackRedirectUrl='/onboarding'
-      signUpFallbackRedirectUrl='/sign-in'
     >
-      <SignedIn>
+      <ProtectedRoute>
         <Header />
 
         <main className='flex flex-row'>
@@ -39,11 +38,7 @@ const RootLayout = () => {
         </main>
 
         <Footer />
-      </SignedIn>
-
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
+      </ProtectedRoute>
     </ClerkProvider>
   )
 }
