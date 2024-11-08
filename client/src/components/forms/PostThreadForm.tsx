@@ -23,7 +23,7 @@ type Props = {
 
 const PostThreadForm = ({ userObjectId }: Props) => {
   const { postThread, isPending } = usePostThread()
-  const { organization } = useOrganization()
+  // const { organization } = useOrganization()
   const navigate = useNavigate()
 
   const form = useForm<PostThreadData>({
