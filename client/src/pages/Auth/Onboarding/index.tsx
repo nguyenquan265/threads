@@ -5,32 +5,28 @@ import { useUser } from '@clerk/clerk-react'
 import { Navigate } from 'react-router-dom'
 
 const OnboardingPage = () => {
-  const { isSignedIn, user, isLoaded } = useUser()
+  const { user, isSignedIn, isLoaded } = useUser()
   const { data: userInfo, isLoading } = useGetUser()
 
   if (!isLoaded || isLoading) {
-    return (
-      <div className='bg-dark-1 min-h-screen w-full flex items-center justify-center'>
-        <Loader />
-      </div>
-    )
+    return <Loader />
   }
 
-  if (!isSignedIn || !user) {
+  if (!isSignedIn) {
     return <Navigate to='/sign-in' />
   }
 
-  if (userInfo && userInfo.onboarded) {
+  if (userInfo?.onboarded) {
     return <Navigate to='/' />
   }
 
   const userData = {
-    clerkId: user?.id || '',
+    clerkId: user.id || '',
     objectId: userInfo?._id || '',
-    username: userInfo ? userInfo.username : (user?.username ?? ''),
-    name: userInfo ? userInfo.name : (user?.firstName ?? ''),
-    bio: userInfo ? userInfo.bio : '',
-    image: userInfo ? userInfo.image : (user?.imageUrl ?? '')
+    username: userInfo?.username || (user.username ?? ''),
+    name: userInfo?.name || (user.firstName ?? ''),
+    bio: userInfo?.bio || '',
+    image: userInfo?.image || (user.imageUrl ?? '')
   }
 
   return (
