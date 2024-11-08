@@ -63,7 +63,7 @@ const PostThreadForm = ({ userObjectId }: Props) => {
           )}
         />
 
-        <Button type='submit' className='bg-primary-500'>
+        <Button type='submit' className='bg-primary-500' disabled={isPending}>
           {isPending ? 'Posting...' : 'Post Thread'}
         </Button>
       </form>

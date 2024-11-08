@@ -180,7 +180,7 @@ const AccountProfileForm = ({ user, btnTitle }: Props) => {
           )}
         />
 
-        <Button type='submit' className='bg-primary-500'>
+        <Button type='submit' className='bg-primary-500' disabled={isImageUploading || isUserUpdating}>
           {isImageUploading || isUserUpdating ? 'Loading...' : btnTitle}
         </Button>
       </form>
