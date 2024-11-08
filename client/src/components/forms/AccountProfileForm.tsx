@@ -115,9 +115,17 @@ const AccountProfileForm = ({ user, btnTitle }: Props) => {
                     width={96}
                     height={96}
                     className='rounded-full object-contain'
+                    loading='lazy'
                   />
                 ) : (
-                  <img src={profilePhoto} alt='profile photo' width={24} height={24} className='object-contain' />
+                  <img
+                    src={profilePhoto}
+                    alt='profile photo'
+                    width={24}
+                    height={24}
+                    className='object-contain'
+                    loading='lazy'
+                  />
                 )}
               </FormLabel>
               <FormControl className='flex-1 text-base-semibold text-gray-200'>

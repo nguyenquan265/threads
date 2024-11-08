@@ -4,10 +4,20 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
+type User = {
+  _id: string
+  clerkId: string
+  username: string
+  name: string
+  bio: string
+  image: string
+  onboarded: boolean
+}
+
 export const useUpdateUser = () => {
   const { getToken, userId } = useAuth()
 
-  const createUpdateUserRequest = async (userData: AccountProfileData): Promise<string> => {
+  const createUpdateUserRequest = async (userData: AccountProfileData): Promise<User> => {
     const token = await getToken()
 
     const res = await fetch(`${API_BASE_URL}/api/v1/users/${userId}`, {
@@ -32,16 +42,6 @@ export const useUpdateUser = () => {
   })
 
   return { updateUser, isPending }
-}
-
-type User = {
-  _id: string
-  clerkId: string
-  username: string
-  name: string
-  bio: string
-  image: string
-  onboarded: boolean
 }
 
 export const useGetUser = () => {

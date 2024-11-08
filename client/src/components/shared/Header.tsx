@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <nav className='topbar'>
       <Link to='/' className='flex items-center gap-4'>
-        <img src={Logo} alt='logo' width={28} height={28} />
+        <img src={Logo} alt='logo' width={28} height={28} loading='lazy' />
         <p className='text-heading3-bold text-light-1 max-xs:hidden'>Threads</p>
       </Link>
 
@@ -16,7 +16,7 @@ const Header = () => {
           <SignedIn>
             <SignOutButton redirectUrl='/sign-in'>
               <div className='flex cursor-pointer'>
-                <img src={LogOut} alt='logout' width={24} height={24} />
+                <img src={LogOut} alt='logout' width={24} height={24} loading='lazy' />
               </div>
             </SignOutButton>
           </SignedIn>

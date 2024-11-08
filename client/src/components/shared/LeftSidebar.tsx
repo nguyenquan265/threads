@@ -15,7 +15,7 @@ const LeftSidebar = () => {
 
           return (
             <Link to={link.route} key={index} className={`leftsidebar_link ${isActive && 'bg-primary-500'}`}>
-              <img src={link.imgURL} alt='link' width={24} height={24} />
+              <img src={link.imgURL} alt='link' width={24} height={24} loading='lazy' />
               <p className='text-light-1 max-lg:hidden'>{link.label}</p>
             </Link>
           )
@@ -26,7 +26,7 @@ const LeftSidebar = () => {
         <SignedIn>
           <SignOutButton redirectUrl='/sign-in'>
             <div className='flex cursor-pointer gap-4 p-4'>
-              <img src={LogOut} alt='logout' width={24} height={24} />
+              <img src={LogOut} alt='logout' width={24} height={24} loading='lazy' />
               <p className='text-light-2 max-lg:hidden'>Logout</p>
             </div>
           </SignOutButton>
