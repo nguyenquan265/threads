@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
 import { usePostThread } from '@/apis/ThreadApi'
 import { useNavigate } from 'react-router-dom'
-import { useOrganization } from '@clerk/clerk-react'
+// import { useOrganization } from '@clerk/clerk-react'
 
 const postThreadSchema = z.object({
   text: z.string().min(3, { message: 'Minimum 3 characters.' }),
