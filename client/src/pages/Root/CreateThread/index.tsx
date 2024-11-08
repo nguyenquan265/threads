@@ -28,7 +28,7 @@ const CreateThreadPage = () => {
     <>
       <h1 className='head-text'>Create Thread</h1>
 
-      <PostThreadForm userId={userInfo._id} />
+      <PostThreadForm userObjectId={userInfo._id} />
     </>
   )
 }

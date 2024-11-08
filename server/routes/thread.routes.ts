@@ -1,11 +1,10 @@
 import { clerkMiddleware } from '@clerk/express'
 import { Router } from 'express'
-import { getUser, updateUser } from '../controllers/user.controller'
 import { authenticate } from '../middlewares/auth.middleware'
+import { createThread } from '../controllers/thread.controller'
 
 const router = Router()
 
-router.get('/:clerkId', getUser)
-router.patch('/:clerkId', clerkMiddleware(), authenticate, updateUser)
+router.post('/', clerkMiddleware(), authenticate, createThread)
 
 export default router

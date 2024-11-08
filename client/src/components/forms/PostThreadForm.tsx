@@ -4,33 +4,54 @@ import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
+import { usePostThread } from '@/apis/ThreadApi'
+import { useNavigate } from 'react-router-dom'
+import { useOrganization } from '@clerk/clerk-react'
 
 const postThreadSchema = z.object({
-  thread: z.string().min(3, { message: 'Minimum 3 characters.' }),
-  accountId: z.string()
+  text: z.string().min(3, { message: 'Minimum 3 characters.' }),
+  // accountId: z.string()
+  author: z.string(),
+  communityId: z.string().nullable()
 })
 
 export type PostThreadData = z.infer<typeof postThreadSchema>
 
 type Props = {
-  userId: string
+  userObjectId: string
 }
 
-const PostThreadForm = ({ userId }: Props) => {
+const PostThreadForm = ({ userObjectId }: Props) => {
+  const { postThread, isLoading } = usePostThread()
+  const { organization } = useOrganization()
+  const navigate = useNavigate()
+
   const form = useForm<PostThreadData>({
     resolver: zodResolver(postThreadSchema),
     defaultValues: {
-      thread: '',
-      accountId: userId
+      text: '',
+      // accountId: userObjectId
+      author: userObjectId,
+      communityId: null
     }
   })
 
+  const onSubmit = async (values: PostThreadData) => {
+    await postThread({
+      text: values.text,
+      author: values.author,
+      communityId: values.communityId
+    })
+
+    navigate('/')
+  }
+
   return (
     <Form {...form}>
-      <form className='mt-10 flex flex-col justify-start gap-10'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='mt-10 flex flex-col justify-start gap-10'>
         <FormField
           control={form.control}
-          name='thread'
+          name='text'
           render={({ field }) => (
             <FormItem className='flex w-full flex-col gap-3'>
               <FormLabel className='text-base-semibold text-light-2'>Content</FormLabel>
@@ -43,7 +64,7 @@ const PostThreadForm = ({ userId }: Props) => {
         />
 
         <Button type='submit' className='bg-primary-500'>
-          Post Thread
+          {isLoading ? 'Posting...' : 'Post Thread'}
         </Button>
       </form>
     </Form>
