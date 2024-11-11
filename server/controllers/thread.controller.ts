@@ -11,7 +11,7 @@ interface GetThreadsRequest extends Request {
   }
 }
 
-export const getPosts = asyncHandler(async (req: GetThreadsRequest, res: Response, next: NextFunction) => {
+export const getThreads = asyncHandler(async (req: GetThreadsRequest, res: Response, next: NextFunction) => {
   const page = parseInt(req.query.page) || 1
   const limit = parseInt(req.query.limit) || 20
   const skip = (page - 1) * limit
@@ -64,4 +64,16 @@ export const createThread = asyncHandler(async (req: CreateThreadRequest, res: R
   await User.findByIdAndUpdate(author, { $push: { threads: thread._id } })
 
   res.status(201).json(thread)
+})
+
+export const getThreadByID = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const thread = await Thread.findById(req.params.id)
+    .populate({ path: 'author', model: User })
+    .populate({ path: 'children', populate: { path: 'author', model: User } })
+
+  if (!thread) {
+    throw new ApiError(404, 'Thread not found.')
+  }
+
+  res.status(200).json(thread)
 })
