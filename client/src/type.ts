@@ -20,3 +20,5 @@ export type Thread = {
   createdAt: string
   updatedAt: string
 }
+
+export type Community = {}
