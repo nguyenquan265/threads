@@ -68,8 +68,26 @@ export const createThread = asyncHandler(async (req: CreateThreadRequest, res: R
 
 export const getThreadByID = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const thread = await Thread.findById(req.params.id)
-    .populate({ path: 'author', model: User })
-    .populate({ path: 'children', populate: { path: 'author', model: User } })
+    .populate({ path: 'author', model: User, select: '_id clerkId name image' })
+    .populate({
+      path: 'children',
+      populate: [
+        {
+          path: 'author', // Populate the author field within children
+          model: User,
+          select: '_id clerkid name parentId image' // Select only _id and username fields of the author
+        },
+        {
+          path: 'children', // Populate the children field within children
+          model: Thread, // The model of the nested children (assuming it's the same "Thread" model)
+          populate: {
+            path: 'author', // Populate the author field within nested children
+            model: User,
+            select: '_id clerkid name parentId image' // Select only _id and username fields of the author
+          }
+        }
+      ]
+    })
 
   if (!thread) {
     throw new ApiError(404, 'Thread not found.')

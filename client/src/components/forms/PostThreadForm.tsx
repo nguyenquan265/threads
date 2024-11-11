@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
-import { usePostThread } from '@/apis/ThreadApi'
+import { useCreateThread } from '@/apis/ThreadApi'
 import { useNavigate } from 'react-router-dom'
 // import { useOrganization } from '@clerk/clerk-react'
 
@@ -22,7 +22,7 @@ type Props = {
 }
 
 const PostThreadForm = ({ userObjectId }: Props) => {
-  const { postThread, isPending } = usePostThread()
+  const { postThread, isPending } = useCreateThread()
   // const { organization } = useOrganization()
   const navigate = useNavigate()
 

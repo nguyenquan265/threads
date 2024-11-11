@@ -23,14 +23,13 @@ export const useGetPosts = (page?: number, limit?: number) => {
 
   const { data, isLoading } = useQuery({
     queryKey: ['posts', page, limit],
-    queryFn: getPostsRequest,
-    refetchOnWindowFocus: true
+    queryFn: getPostsRequest
   })
 
   return { data, isLoading }
 }
 
-export const usePostThread = () => {
+export const useCreateThread = () => {
   const { getToken } = useAuth()
   const queryClient = useQueryClient()
 
@@ -62,4 +61,23 @@ export const usePostThread = () => {
   })
 
   return { postThread, isPending }
+}
+
+export const useGetSingleThread = (id: string) => {
+  const getSingleThreadRequest = async (): Promise<Thread> => {
+    const res = await fetch(`${API_BASE_URL}/api/v1/threads/${id}`)
+
+    if (!res.ok) {
+      throw new Error('Failed to get thread.')
+    }
+
+    return res.json()
+  }
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['thread', id],
+    queryFn: getSingleThreadRequest
+  })
+
+  return { data, isLoading }
 }
