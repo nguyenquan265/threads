@@ -1,18 +1,9 @@
 import { AccountProfileData } from '@/components/forms/AccountProfileForm'
+import { User } from '@/type'
 import { useAuth } from '@clerk/clerk-react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
-
-type User = {
-  _id: string
-  clerkId: string
-  username: string
-  name: string
-  bio: string
-  image: string
-  onboarded: boolean
-}
 
 export const useUpdateUser = () => {
   const { getToken, userId: clerkId } = useAuth()
