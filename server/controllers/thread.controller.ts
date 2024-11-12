@@ -95,3 +95,34 @@ export const getThreadByID = asyncHandler(async (req: Request, res: Response, ne
 
   res.status(200).json(thread)
 })
+
+interface AddCommentToThreadRequest extends Request {
+  body: {
+    commentText: string
+    userId: string
+  }
+}
+
+export const addCommentToThread = asyncHandler(
+  async (req: AddCommentToThreadRequest, res: Response, next: NextFunction) => {
+    // find original thread by id
+    const originThread = await Thread.findById(req.params.id)
+
+    if (!originThread) {
+      throw new ApiError(404, 'Thread not found.')
+    }
+
+    // create new comment thread
+    const commentThread = await Thread.create({
+      text: req.body.commentText,
+      author: req.body.userId,
+      parentId: req.params.id
+    })
+
+    // update original thread to include new comment
+    originThread.children.push(commentThread._id)
+    await originThread.save()
+
+    res.status(201).json(commentThread)
+  }
+)
