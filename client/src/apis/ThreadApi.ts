@@ -81,3 +81,37 @@ export const useGetSingleThread = (id: string) => {
 
   return { data, isLoading }
 }
+
+export const useCreateComment = () => {
+  const { getToken } = useAuth()
+  const queryClient = useQueryClient()
+
+  const createCommentRequest = async (commentData: { commentText: string; userId: string; threadId: string }) => {
+    const token = await getToken()
+
+    const res = await fetch(`${API_BASE_URL}/api/v1/threads/${commentData.threadId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      credentials: 'include',
+      body: JSON.stringify(commentData)
+    })
+
+    if (!res.ok) {
+      throw new Error('Failed to post comment.')
+    }
+
+    return res.json()
+  }
+
+  const { mutateAsync: addComment, isPending } = useMutation({
+    mutationFn: createCommentRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries()
+    }
+  })
+
+  return { addComment, isPending }
+}
