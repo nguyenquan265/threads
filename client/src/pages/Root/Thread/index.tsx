@@ -43,7 +43,22 @@ const ThreadPage = () => {
         <CommentForm threadId={thread._id} currentUserImg={userInfo.image} currentUserId={userInfo._id} />
       </div>
 
-      <div className='mt-10'></div>
+      <div className='mt-10'>
+        {thread.children.map((comment) => (
+          <ThreadCard
+            key={comment._id}
+            id={comment._id}
+            currentUserId={userInfo.clerkId}
+            parentId={comment.parentId}
+            content={comment.text}
+            author={comment.author}
+            community={comment.community}
+            createdAt={comment.createdAt}
+            comments={comment.children}
+            isComment
+          />
+        ))}
+      </div>
     </section>
   )
 }
