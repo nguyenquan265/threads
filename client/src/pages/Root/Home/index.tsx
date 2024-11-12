@@ -1,7 +1,7 @@
 import { useGetPosts } from '@/apis/ThreadApi'
 import { useGetUser } from '@/apis/UserApi'
 import ThreadCard from '@/components/cards/ThreadCard'
-import Loader from '@/components/shared/Loader'
+// import Loader from '@/components/shared/Loader'
 import { Navigate } from 'react-router-dom'
 
 const Home = () => {
@@ -9,7 +9,7 @@ const Home = () => {
   const { data: result, isLoading: isPostsLoading } = useGetPosts()
 
   if (isUserLoading || isPostsLoading) {
-    return <Loader />
+    return null
   }
 
   if (!userInfo?.onboarded) {
