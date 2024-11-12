@@ -1,7 +1,7 @@
 import { useGetSingleThread } from '@/apis/ThreadApi'
 import { useGetUser } from '@/apis/UserApi'
 import ThreadCard from '@/components/cards/ThreadCard'
-import Loader from '@/components/shared/Loader'
+import CommentForm from '@/components/forms/CommentForm'
 import { Navigate, useParams } from 'react-router-dom'
 
 const ThreadPage = () => {
@@ -12,7 +12,7 @@ const ThreadPage = () => {
   if (!id) return null
 
   if (isUserLoading || isPostLoading) {
-    return <Loader />
+    return null
   }
 
   if (!userInfo?.onboarded) {
@@ -25,17 +25,25 @@ const ThreadPage = () => {
 
   return (
     <section className='relative'>
-      <ThreadCard
-        key={thread._id}
-        id={thread._id}
-        currentUserId={userInfo.clerkId}
-        parentId={thread.parentId}
-        content={thread.text}
-        author={thread.author}
-        community={thread.community}
-        createdAt={thread.createdAt}
-        comments={thread.children}
-      />
+      <div>
+        <ThreadCard
+          key={thread._id}
+          id={thread._id}
+          currentUserId={userInfo.clerkId}
+          parentId={thread.parentId}
+          content={thread.text}
+          author={thread.author}
+          community={thread.community}
+          createdAt={thread.createdAt}
+          comments={thread.children}
+        />
+      </div>
+
+      <div className='mt-7'>
+        <CommentForm threadId={thread._id} currentUserImg={userInfo.image} currentUserId={userInfo._id} />
+      </div>
+
+      <div className='mt-10'></div>
     </section>
   )
 }
