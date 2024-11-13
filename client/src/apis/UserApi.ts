@@ -35,11 +35,11 @@ export const useUpdateUser = () => {
   return { updateUser, isPending }
 }
 
-export const useGetUser = () => {
-  const { userId: clerkId } = useAuth()
+export const useGetUser = (id?: string) => {
+  const { userId: currentUserclerkId } = useAuth()
 
   const createGetUserRequest = async (): Promise<User> => {
-    const res = await fetch(`${API_BASE_URL}/api/v1/users/${clerkId}`)
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/${id || currentUserclerkId}`)
 
     if (!res.ok) {
       throw new Error('Failed to get user')
@@ -49,9 +49,9 @@ export const useGetUser = () => {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['user', clerkId],
+    queryKey: ['user', id || currentUserclerkId],
     queryFn: createGetUserRequest,
-    enabled: !!clerkId
+    enabled: id ? !!id : !!currentUserclerkId
   })
 
   return { data, isLoading }
