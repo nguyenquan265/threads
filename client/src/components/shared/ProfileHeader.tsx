@@ -1,6 +1,6 @@
 type Props = {
   accountId: string
-  authUserId: string
+  currentUserId: string
   name: string
   username: string
   imgUrl: string
@@ -8,7 +8,7 @@ type Props = {
   type?: string
 }
 
-const ProfileHeader = ({ accountId, authUserId, bio, imgUrl, name, username, type }: Props) => {
+const ProfileHeader = ({ accountId, currentUserId, bio, imgUrl, name, username, type }: Props) => {
   return (
     <div className='flex w-full flex-col justify-start'>
       <div className='flex items-center justify-between'>
