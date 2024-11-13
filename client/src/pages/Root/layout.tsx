@@ -5,7 +5,7 @@ import RightSidebar from '@/components/shared/RightSidebar'
 import { ClerkProvider } from '@clerk/clerk-react'
 import { Outlet } from 'react-router-dom'
 import { dark } from '@clerk/themes'
-import ProtectedRoute from '@/components/common/ProtectedRoute'
+import ProtectedRoute from '@/components/shared/ProtectedRoute'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
