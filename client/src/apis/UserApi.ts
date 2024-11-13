@@ -56,3 +56,23 @@ export const useGetUser = (id?: string) => {
 
   return { data, isLoading }
 }
+
+export const useGetUserPosts = (id: string) => {
+  const createGetUserPostsRequest = async (): Promise<User> => {
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/${id}/posts`)
+
+    if (!res.ok) {
+      throw new Error('Failed to get user posts')
+    }
+
+    return res.json()
+  }
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['userPosts', id],
+    queryFn: createGetUserPostsRequest,
+    enabled: !!id
+  })
+
+  return { data, isLoading }
+}
