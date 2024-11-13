@@ -19,18 +19,18 @@ const ProfilePage = () => {
     return <Navigate to='/onboarding' />
   }
 
-  if (id && !userInfo?.onboarded) {
-    return (
-      <section className='mt-9 flex flex-col gap-10'>
-        <p className='no-result'>This user has not completed onboarding yet.</p>
-      </section>
-    )
-  }
-
   if (!userInfo) {
     return (
       <section className='mt-9 flex flex-col gap-10'>
         <p className='no-result'>User not found</p>
+      </section>
+    )
+  }
+
+  if (id && !userInfo.onboarded) {
+    return (
+      <section className='mt-9 flex flex-col gap-10'>
+        <p className='no-result'>This user has not completed onboarding yet.</p>
       </section>
     )
   }
