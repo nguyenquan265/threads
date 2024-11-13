@@ -4,6 +4,10 @@ import Heart from '@/assets/heart.svg'
 import Create from '@/assets/create.svg'
 import Community from '@/assets/community.svg'
 import User from '@/assets/user.svg'
+import Reply from '@/assets/reply.svg'
+import Members from '@/assets/members.svg'
+import Tag from '@/assets/tag.svg'
+import Requests from '@/assets/request.svg'
 
 export const sidebarLinks = [
   {
@@ -39,13 +43,13 @@ export const sidebarLinks = [
 ]
 
 export const profileTabs = [
-  { value: 'threads', label: 'Threads', icon: '/assets/reply.svg' },
-  { value: 'replies', label: 'Replies', icon: '/assets/members.svg' },
-  { value: 'tagged', label: 'Tagged', icon: '/assets/tag.svg' }
+  { value: 'threads', label: 'Threads', icon: Reply },
+  { value: 'replies', label: 'Replies', icon: Members },
+  { value: 'tagged', label: 'Tagged', icon: Tag }
 ]
 
 export const communityTabs = [
-  { value: 'threads', label: 'Threads', icon: '/assets/reply.svg' },
-  { value: 'members', label: 'Members', icon: '/assets/members.svg' },
-  { value: 'requests', label: 'Requests', icon: '/assets/request.svg' }
+  { value: 'threads', label: 'Threads', icon: Reply },
+  { value: 'members', label: 'Members', icon: Members },
+  { value: 'requests', label: 'Requests', icon: Requests }
 ]
