@@ -6,6 +6,7 @@ export type User = {
   bio: string
   image: string
   onboarded: boolean
+  threads: Thread[]
   createdAt: string
   updatedAt: string
 }
