@@ -3,6 +3,7 @@ import asyncHandler from '../utils/asyncHandler'
 import { hasResourcePermission } from '../middlewares/auth.middleware'
 import ApiError from '../utils/ApiError'
 import User from '../models/user.model'
+import Thread from '../models/thread.model'
 
 interface UpdateUserRequest extends Request {
   body: {
@@ -48,4 +49,27 @@ export const getUser = asyncHandler(async (req: Request, res: Response, next: Ne
   }
 
   res.status(200).json(user)
+})
+
+export const getUserPosts = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const { clerkId } = req.params
+
+  const userPosts = await User.findOne({ clerkId }).populate({
+    path: 'threads',
+    model: Thread,
+    populate: [
+      { path: 'children', model: Thread },
+      {
+        path: 'author',
+        model: User,
+        select: 'clerkId name image'
+      }
+    ]
+  })
+
+  if (!userPosts) {
+    throw new ApiError(404, 'User not found')
+  }
+
+  res.status(200).json(userPosts)
 })
