@@ -8,6 +8,9 @@ import OnboardingPage from './pages/Auth/Onboarding'
 import CreateThreadPage from './pages/Root/CreateThread'
 import ThreadPage from './pages/Root/Thread'
 import ProfilePage from './pages/Root/Profile'
+import SearchPage from './pages/Root/Search'
+import ActivityPage from './pages/Root/Activity'
+import CommunitiesPage from './pages/Root/Communities'
 
 const router = createBrowserRouter([
   {
@@ -27,12 +30,24 @@ const router = createBrowserRouter([
         element: <ThreadPage />
       },
       {
-        path: 'profile',
+        path: '/profile',
         element: <ProfilePage />
       },
       {
-        path: 'profile/:id',
+        path: '/profile/:id',
         element: <ProfilePage />
+      },
+      {
+        path: '/search',
+        element: <SearchPage />
+      },
+      {
+        path: '/activity',
+        element: <ActivityPage />
+      },
+      {
+        path: '/communities',
+        element: <CommunitiesPage />
       }
     ]
   },
