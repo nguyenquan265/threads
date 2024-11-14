@@ -77,6 +77,11 @@ export const useGetUserPosts = (id: string) => {
   return { data, isLoading }
 }
 
+type GetUsersResponse = {
+  users: User[]
+  isNext: boolean
+}
+
 export const useGetUsers = (
   page: number = 1,
   limit: number = 20,
@@ -85,7 +90,7 @@ export const useGetUsers = (
 ) => {
   const { userId: currentUserclerkId } = useAuth()
 
-  const createGetUsersRequest = async (): Promise<User[]> => {
+  const createGetUsersRequest = async (): Promise<GetUsersResponse> => {
     const res = await fetch(
       `${API_BASE_URL}/api/v1/users?userId=${currentUserclerkId}&page=${page}&limit=${limit}&searchString=${searchString}&sortBy=${sortBy}`
     )
