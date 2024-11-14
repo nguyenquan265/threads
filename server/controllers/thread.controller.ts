@@ -6,14 +6,14 @@ import { NextFunction, Request, Response } from 'express'
 
 interface GetThreadsRequest extends Request {
   query: {
-    page: string
-    limit: string
+    page?: string
+    limit?: string
   }
 }
 
 export const getThreads = asyncHandler(async (req: GetThreadsRequest, res: Response, next: NextFunction) => {
-  const page = parseInt(req.query.page) || 1
-  const limit = parseInt(req.query.limit) || 20
+  const page = req.query.page ? parseInt(req.query.page) : 1
+  const limit = req.query.limit ? parseInt(req.query.limit) : 20
   const skip = (page - 1) * limit
 
   // Get all top-level threads
