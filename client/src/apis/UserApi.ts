@@ -49,7 +49,7 @@ export const useGetUser = (id?: string) => {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['user', id || currentUserclerkId],
+    queryKey: ['user', id ? { id } : { currentUserclerkId }],
     queryFn: createGetUserRequest,
     enabled: id ? !!id : !!currentUserclerkId
   })
@@ -69,9 +69,38 @@ export const useGetUserPosts = (id: string) => {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['userPosts', id],
+    queryKey: ['userPosts', { id }],
     queryFn: createGetUserPostsRequest,
     enabled: !!id
+  })
+
+  return { data, isLoading }
+}
+
+export const useGetUsers = (
+  page: number = 1,
+  limit: number = 20,
+  searchString: string = '',
+  sortBy: string = 'desc'
+) => {
+  const { userId: currentUserclerkId } = useAuth()
+
+  const createGetUsersRequest = async (): Promise<User[]> => {
+    const res = await fetch(
+      `${API_BASE_URL}/api/v1/users?userId=${currentUserclerkId}&page=${page}&limit=${limit}&searchString=${searchString}&sortBy=${sortBy}`
+    )
+
+    if (!res.ok) {
+      throw new Error('Failed to get users')
+    }
+
+    return res.json()
+  }
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['users', { page }, { limit }, { searchString }, { sortBy }],
+    queryFn: createGetUsersRequest,
+    enabled: !!currentUserclerkId
   })
 
   return { data, isLoading }
