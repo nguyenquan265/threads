@@ -12,7 +12,7 @@ type GetPostsResponse = {
 
 export const useGetPosts = (page: number = 1, limit: number = 20) => {
   const getPostsRequest = async (): Promise<GetPostsResponse> => {
-    const res = await fetch(`${API_BASE_URL}/api/v1/threads?page=${page || 1}&limit=${limit || 20}`)
+    const res = await fetch(`${API_BASE_URL}/api/v1/threads?page=${page}&limit=${limit}`)
 
     if (!res.ok) {
       throw new Error('Failed to get posts.')
@@ -22,7 +22,7 @@ export const useGetPosts = (page: number = 1, limit: number = 20) => {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['posts', page, limit],
+    queryKey: ['posts', { page }, { limit }],
     queryFn: getPostsRequest
   })
 
@@ -75,7 +75,7 @@ export const useGetSingleThread = (id: string) => {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['thread', id],
+    queryKey: ['thread', { id }],
     queryFn: getSingleThreadRequest
   })
 
