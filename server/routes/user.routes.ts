@@ -5,10 +5,9 @@ import { authenticate } from '../middlewares/auth.middleware'
 
 const router = Router()
 
-router.get('/', getUsers)
-router.get('/:clerkId', getUser)
-router.patch('/:clerkId', clerkMiddleware(), authenticate, updateUser)
-router.get('/:clerkId/posts', getUserPosts)
-router.get('/:objectId/activities', getUserActivities)
+router.route('/').get(getUsers)
+router.route('/:clerkId').get(getUser).patch(clerkMiddleware(), authenticate, updateUser)
+router.route('/:clerkId/posts').get(getUserPosts)
+router.route('/:objectId/activities').get(getUserActivities)
 
 export default router

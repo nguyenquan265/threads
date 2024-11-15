@@ -5,9 +5,8 @@ import { addCommentToThread, createThread, getThreadByID, getThreads } from '../
 
 const router = Router()
 
-router.get('/', getThreads)
-router.post('/', clerkMiddleware(), authenticate, createThread)
-router.get('/:id', getThreadByID)
-router.post('/:id/comments', clerkMiddleware(), authenticate, addCommentToThread)
+router.route('/').get(getThreads).post(clerkMiddleware(), authenticate, createThread)
+router.route('/:id').get(getThreadByID)
+router.route('/:id/comments').post(clerkMiddleware(), authenticate, addCommentToThread)
 
 export default router

@@ -125,7 +125,8 @@ export const useGetUserActivities = (objectId?: string) => {
   const { data, isLoading } = useQuery({
     queryKey: ['userActivities', { objectId }],
     queryFn: createGetUserActivitiesRequest,
-    enabled: !!objectId
+    enabled: !!objectId,
+    staleTime: 0 // Disable cache, always fetch the latest data
   })
 
   return { data, isLoading }
