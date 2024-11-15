@@ -51,7 +51,7 @@ const ProfilePage = () => {
           <TabsList className='tab'>
             {profileTabs.map((tab) => (
               <TabsTrigger key={tab.label} value={tab.value} className='tab'>
-                <img src={tab.icon} alt={tab.label} width={24} height={24} className='object-contain' />
+                <img src={tab.icon} alt={tab.label} width={24} height={24} className='object-contain' loading='lazy' />
                 <p className='max-sm:hidden'>{tab.label}</p>
 
                 {tab.label === 'Threads' && (

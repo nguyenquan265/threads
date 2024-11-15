@@ -14,7 +14,7 @@ const ProfileHeader = ({ accountId, currentUserId, bio, imgUrl, name, username, 
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-3'>
           <div className='relative h-20 w-20 object-cover'>
-            <img src={imgUrl} alt='profile image' className='rounded-full object-cover shadow-2xl' />
+            <img src={imgUrl} alt='profile image' className='rounded-full object-cover shadow-2xl' loading='lazy' />
           </div>
 
           <div className='flex-1'>

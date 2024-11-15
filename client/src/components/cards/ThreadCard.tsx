@@ -45,7 +45,7 @@ const ThreadCard = ({
         <div className='flex w-full flex-1 flex-row gap-4'>
           <div className='flex flex-col items-center'>
             <Link to={`/profile/${author.clerkId}`} className='relative h-11 w-11'>
-              <img src={author.image} alt='Profile image' className='cursor-pointer rounded-full' />
+              <img src={author.image} alt='Profile image' className='cursor-pointer rounded-full' loading='lazy' />
             </Link>
 
             <div className='thread-card_bar' />
@@ -60,12 +60,40 @@ const ThreadCard = ({
 
             <div className={`${isComment && 'mb-10'} mt-5 flex flex-col gap-3`}>
               <div className='flex gap-3.5'>
-                <img src={GrayHeart} alt='heart' width={24} height={24} className='cursor-pointer object-contain' />
+                <img
+                  src={GrayHeart}
+                  alt='heart'
+                  width={24}
+                  height={24}
+                  className='cursor-pointer object-contain'
+                  loading='lazy'
+                />
                 <Link to={`/thread/${id}`}>
-                  <img src={Reply} alt='reply' width={24} height={24} className='cursor-pointer object-contain' />
+                  <img
+                    src={Reply}
+                    alt='reply'
+                    width={24}
+                    height={24}
+                    className='cursor-pointer object-contain'
+                    loading='lazy'
+                  />
                 </Link>
-                <img src={Repost} alt='repost' width={24} height={24} className='cursor-pointer object-contain' />
-                <img src={Share} alt='share' width={24} height={24} className='cursor-pointer object-contain' />
+                <img
+                  src={Repost}
+                  alt='repost'
+                  width={24}
+                  height={24}
+                  className='cursor-pointer object-contain'
+                  loading='lazy'
+                />
+                <img
+                  src={Share}
+                  alt='share'
+                  width={24}
+                  height={24}
+                  className='cursor-pointer object-contain'
+                  loading='lazy'
+                />
               </div>
 
               {isComment && comments.length > 0 && (

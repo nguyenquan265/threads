@@ -1,5 +1,5 @@
 import { AccountProfileData } from '@/components/forms/AccountProfileForm'
-import { User } from '@/type'
+import { Thread, User } from '@/type'
 import { useAuth } from '@clerk/clerk-react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
@@ -35,11 +35,11 @@ export const useUpdateUser = () => {
   return { updateUser, isPending }
 }
 
-export const useGetUser = (id?: string) => {
+export const useGetUser = (clerkId?: string) => {
   const { userId: currentUserclerkId } = useAuth()
 
   const createGetUserRequest = async (): Promise<User> => {
-    const res = await fetch(`${API_BASE_URL}/api/v1/users/${id || currentUserclerkId}`)
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/${clerkId || currentUserclerkId}`)
 
     if (!res.ok) {
       throw new Error('Failed to get user')
@@ -49,17 +49,17 @@ export const useGetUser = (id?: string) => {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['user', id ? { id } : { currentUserclerkId }],
+    queryKey: ['user', clerkId ? { clerkId } : { clerkId: currentUserclerkId }],
     queryFn: createGetUserRequest,
-    enabled: id ? !!id : !!currentUserclerkId
+    enabled: clerkId ? !!clerkId : !!currentUserclerkId
   })
 
   return { data, isLoading }
 }
 
-export const useGetUserPosts = (id: string) => {
+export const useGetUserPosts = (clerkId: string) => {
   const createGetUserPostsRequest = async (): Promise<User> => {
-    const res = await fetch(`${API_BASE_URL}/api/v1/users/${id}/posts`)
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/${clerkId}/posts`)
 
     if (!res.ok) {
       throw new Error('Failed to get user posts')
@@ -69,9 +69,9 @@ export const useGetUserPosts = (id: string) => {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['userPosts', { id }],
+    queryKey: ['userPosts', { clerkId }],
     queryFn: createGetUserPostsRequest,
-    enabled: !!id
+    enabled: !!clerkId
   })
 
   return { data, isLoading }
@@ -106,6 +106,26 @@ export const useGetUsers = (
     queryKey: ['users', { page }, { limit }, { searchString }, { sortBy }],
     queryFn: createGetUsersRequest,
     enabled: !!currentUserclerkId
+  })
+
+  return { data, isLoading }
+}
+
+export const useGetUserActivities = (objectId?: string) => {
+  const createGetUserActivitiesRequest = async (): Promise<Thread[]> => {
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/${objectId}/activities`)
+
+    if (!res.ok) {
+      throw new Error('Failed to get user activities')
+    }
+
+    return res.json()
+  }
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['userActivities', { objectId }],
+    queryFn: createGetUserActivitiesRequest,
+    enabled: !!objectId
   })
 
   return { data, isLoading }

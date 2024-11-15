@@ -48,6 +48,7 @@ const CommentForm = ({ threadId, currentUserImg, currentUserId }: Props) => {
                   width={48}
                   height={48}
                   className='rounded-full object-cover'
+                  loading='lazy'
                 />
               </FormLabel>
               <FormControl className='border-none bg-transparent'>

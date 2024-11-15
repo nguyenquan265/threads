@@ -63,9 +63,9 @@ export const useCreateThread = () => {
   return { postThread, isPending }
 }
 
-export const useGetSingleThread = (id: string) => {
+export const useGetSingleThread = (objectId: string) => {
   const getSingleThreadRequest = async (): Promise<Thread> => {
-    const res = await fetch(`${API_BASE_URL}/api/v1/threads/${id}`)
+    const res = await fetch(`${API_BASE_URL}/api/v1/threads/${objectId}`)
 
     if (!res.ok) {
       throw new Error('Failed to get thread.')
@@ -75,7 +75,7 @@ export const useGetSingleThread = (id: string) => {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['thread', { id }],
+    queryKey: ['thread', { objectId }],
     queryFn: getSingleThreadRequest
   })
 
