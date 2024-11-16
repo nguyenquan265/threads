@@ -1,10 +1,8 @@
-import { clerkMiddleware } from '@clerk/express'
 import { Router } from 'express'
-import { authenticate } from '../middlewares/auth.middleware'
 import { communityWebhook } from '../controllers/community.controller'
 
 const router = Router()
 
-router.route('/').post(clerkMiddleware(), authenticate, communityWebhook)
+router.route('/').post(communityWebhook)
 
 export default router
