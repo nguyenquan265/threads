@@ -6,11 +6,10 @@ import { Button } from '../ui/button'
 import { Textarea } from '../ui/textarea'
 import { useCreateThread } from '@/apis/ThreadApi'
 import { useNavigate } from 'react-router-dom'
-// import { useOrganization } from '@clerk/clerk-react'
+import { useOrganization } from '@clerk/clerk-react'
 
 const postThreadSchema = z.object({
   text: z.string().min(3, { message: 'Minimum 3 characters.' }),
-  // accountId: z.string()
   author: z.string(),
   communityId: z.string().nullable()
 })
@@ -23,16 +22,15 @@ type Props = {
 
 const PostThreadForm = ({ userObjectId }: Props) => {
   const { postThread, isPending } = useCreateThread()
-  // const { organization } = useOrganization()
+  const { organization } = useOrganization()
   const navigate = useNavigate()
 
   const form = useForm<PostThreadData>({
     resolver: zodResolver(postThreadSchema),
     defaultValues: {
       text: '',
-      // accountId: userObjectId
       author: userObjectId,
-      communityId: null
+      communityId: organization ? organization.id : null
     }
   })
 

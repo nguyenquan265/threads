@@ -4,6 +4,7 @@ import { hasResourcePermission } from '../middlewares/auth.middleware'
 import ApiError from '../utils/ApiError'
 import User from '../models/user.model'
 import Thread from '../models/thread.model'
+import Community from '../models/community.model'
 import { FilterQuery, SortOrder } from 'mongoose'
 
 interface GetUserRequest extends Request {
@@ -53,7 +54,10 @@ export const getUsers = asyncHandler(async (req: GetUserRequest, res: Response, 
 export const getUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { clerkId } = req.params
 
-  const user = await User.findOne({ clerkId })
+  const user = await User.findOne({ clerkId }).populate({
+    path: 'communities',
+    model: Community
+  })
 
   if (!user) {
     throw new ApiError(404, 'User not found')
@@ -103,7 +107,20 @@ export const getUserPosts = asyncHandler(async (req: Request, res: Response, nex
     path: 'threads',
     model: Thread,
     populate: [
-      { path: 'children', model: Thread },
+      {
+        path: 'community',
+        model: Community,
+        select: 'name clerkId image _id'
+      },
+      {
+        path: 'children',
+        model: Thread,
+        populate: {
+          path: 'author',
+          model: User,
+          select: 'name image clerkId _id' // Select the "name" and "_id" fields from the "User" model
+        }
+      },
       {
         path: 'author',
         model: User,

@@ -3,6 +3,7 @@ import GrayHeart from '@/assets/heart-gray.svg'
 import Reply from '@/assets/reply.svg'
 import Repost from '@/assets/repost.svg'
 import Share from '@/assets/share.svg'
+import formatDateString from '@/helpers/formatDateString'
 
 type Props = {
   id: string
@@ -15,9 +16,10 @@ type Props = {
     clerkId: string
   }
   community: {
-    id: string
+    clerkId: string
     name: string
     image: string
+    createdAt: string
   } | null
   createdAt: string
   comments: {
@@ -42,6 +44,7 @@ const ThreadCard = ({
   return (
     <article className={`flex w-full flex-col rounded-xl ${isComment ? 'px-0 xs:px-7' : 'bg-dark-2 p-7'}`}>
       <div className='flex items-center justify-between'>
+        {/* Show main content of post */}
         <div className='flex w-full flex-1 flex-row gap-4'>
           <div className='flex flex-col items-center'>
             <Link to={`/profile/${author.clerkId}`} className='relative h-11 w-11'>
@@ -104,6 +107,28 @@ const ThreadCard = ({
             </div>
           </div>
         </div>
+
+        {/* Delete thread */}
+
+        {/* Show comments logo */}
+
+        {/* Show community of the post (if have) */}
+        {!isComment && community && (
+          <Link to={`/communities/${community.clerkId}`} className='mt-5 flex items-center'>
+            <p className='text-subtle-medium text-gray-1'>
+              {formatDateString(community.createdAt)}- {community.name} Community
+            </p>
+
+            <img
+              src={community.image}
+              alt={community.name}
+              width={14}
+              height={14}
+              className='ml-1 rounded-full object-cover'
+              loading='lazy'
+            />
+          </Link>
+        )}
       </div>
     </article>
   )

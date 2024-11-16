@@ -75,11 +75,11 @@ export const communityWebhook = asyncHandler(async (req: Request, res: Response,
         created_by
       )
 
-      return res.status(201).json({ message: 'User created' })
+      return res.status(201).json({ message: 'Community created' })
     } catch (err) {
       console.log(err)
 
-      return next(new ApiError(500, 'Internal Server Error'))
+      throw new ApiError(500, 'Internal Server Error')
     }
   }
 
@@ -95,7 +95,7 @@ export const communityWebhook = asyncHandler(async (req: Request, res: Response,
     } catch (err) {
       console.log(err)
 
-      return next(new ApiError(500, 'Internal Server Error'))
+      throw new ApiError(500, 'Internal Server Error')
     }
   }
 
@@ -114,7 +114,7 @@ export const communityWebhook = asyncHandler(async (req: Request, res: Response,
     } catch (err) {
       console.log(err)
 
-      return next(new ApiError(500, 'Internal Server Error'))
+      throw new ApiError(500, 'Internal Server Error')
     }
   }
 
@@ -133,7 +133,7 @@ export const communityWebhook = asyncHandler(async (req: Request, res: Response,
     } catch (err) {
       console.log(err)
 
-      return next(new ApiError(500, 'Internal Server Error'))
+      throw new ApiError(500, 'Internal Server Error')
     }
   }
 
@@ -152,7 +152,7 @@ export const communityWebhook = asyncHandler(async (req: Request, res: Response,
     } catch (err) {
       console.log(err)
 
-      return next(new ApiError(500, 'Internal Server Error'))
+      throw new ApiError(500, 'Internal Server Error')
     }
   }
 
@@ -171,7 +171,7 @@ export const communityWebhook = asyncHandler(async (req: Request, res: Response,
     } catch (err) {
       console.log(err)
 
-      return next(new ApiError(500, 'Internal Server Error'))
+      throw new ApiError(500, 'Internal Server Error')
     }
   }
 

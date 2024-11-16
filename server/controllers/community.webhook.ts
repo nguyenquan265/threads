@@ -19,16 +19,14 @@ export const createCommunity = async (
       throw new Error('User not found') // Handle the case if the user with the id is not found
     }
 
-    const newCommunity = new Community({
+    const createdCommunity = await Community.create({
       clerkId,
       name,
       username,
       image,
       bio,
-      createdBy: user._id // Use the mongoose ID of the user
+      createdBy: user._id
     })
-
-    const createdCommunity = await newCommunity.save()
 
     // Update User model
     user.communities.push(createdCommunity._id)

@@ -7,6 +7,7 @@ export type User = {
   image: string
   onboarded: boolean
   threads: Thread[]
+  communities: Community[]
   createdAt: string
   updatedAt: string
 }
@@ -15,11 +16,23 @@ export type Thread = {
   _id: string
   text: string
   author: User
-  community: any // TODO: Add community type
+  community: Community
   parentId: string
   children: Thread[]
   createdAt: string
   updatedAt: string
 }
 
-export type Community = {}
+export type Community = {
+  _id: string
+  clerkId: string
+  username: string
+  name: string
+  image: string
+  bio: string
+  createdBy: User
+  members: User[]
+  threads: Thread[]
+  createdAt: string
+  updatedAt: string
+}

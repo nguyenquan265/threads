@@ -1,3 +1,4 @@
+import Community from '../models/community.model'
 import Thread from '../models/thread.model'
 import User from '../models/user.model'
 import ApiError from '../utils/ApiError'
@@ -22,6 +23,10 @@ export const getThreads = asyncHandler(async (req: GetThreadsRequest, res: Respo
     .skip(skip)
     .limit(limit)
     .populate({ path: 'author', model: User })
+    .populate({
+      path: 'community',
+      model: Community
+    })
     .populate({
       path: 'children',
       populate: {
@@ -55,13 +60,19 @@ export const createThread = asyncHandler(async (req: CreateThreadRequest, res: R
     throw new ApiError(400, 'Text and author are required.')
   }
 
+  const community = await Community.findOne({ clerkId: communityId }, { _id: 1 })
+
   const thread = await Thread.create({
     text,
     author,
-    community: communityId
+    community: community ? community._id : null
   })
 
   await User.findByIdAndUpdate(author, { $push: { threads: thread._id } })
+
+  if (community) {
+    await Community.findByIdAndUpdate(community._id, { $push: { threads: thread._id } })
+  }
 
   res.status(201).json(thread)
 })
@@ -69,6 +80,11 @@ export const createThread = asyncHandler(async (req: CreateThreadRequest, res: R
 export const getThreadByID = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const thread = await Thread.findById(req.params.id)
     .populate({ path: 'author', model: User, select: '_id clerkId name image' })
+    .populate({
+      path: 'community',
+      model: Community,
+      select: '_id clerkId name image'
+    })
     .populate({
       path: 'children',
       populate: [
