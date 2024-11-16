@@ -23,7 +23,8 @@ export const useGetPosts = (page: number = 1, limit: number = 20) => {
 
   const { data, isLoading } = useQuery({
     queryKey: ['posts', { page }, { limit }],
-    queryFn: getPostsRequest
+    queryFn: getPostsRequest,
+    staleTime: 0
   })
 
   return { data, isLoading }
