@@ -29,10 +29,10 @@ export const createCommunity = async (
     })
 
     // Update User model
-    user.communities.push(createdCommunity._id)
-    await user.save()
-
-    console.log(user)
+    if (!user.communities.includes(createdCommunity._id)) {
+      user.communities.push(createdCommunity._id)
+      await user.save()
+    }
 
     return createdCommunity
   } catch (error) {
@@ -234,15 +234,10 @@ export const deleteCommunity = async (communityClerkId: string) => {
     }
 
     // Delete all threads associated with the community
-    // await Thread.deleteMany({ community: deletedCommunity._id })
+    await Thread.deleteMany({ community: deletedCommunity._id })
 
     // Find all users who are part of the community
-    // const communityUsers = await User.find({ communities: deletedCommunity._id })
-
-    const [_, communityUsers] = await Promise.all([
-      Thread.deleteMany({ community: deletedCommunity._id }),
-      await User.find({ communities: deletedCommunity._id })
-    ])
+    const communityUsers = await User.find({ communities: deletedCommunity._id })
 
     // Remove the community from the 'communities' array for each user
     const updateUserPromises = communityUsers.map((user) => {
@@ -251,6 +246,63 @@ export const deleteCommunity = async (communityClerkId: string) => {
     })
 
     await Promise.all(updateUserPromises)
+
+    return deletedCommunity
+  } catch (error) {
+    throw error
+  }
+}
+
+export const deleteCommunityV2 = async (communityClerkId: string) => {
+  try {
+    const deletedCommunity = await Community.findOneAndDelete({
+      clerkId: communityClerkId
+    })
+
+    if (!deletedCommunity) {
+      throw new Error('Community not found')
+    }
+
+    // Tìm tất cả các thread thuộc community
+    const threads = await Thread.find({ community: deletedCommunity._id })
+
+    // Tạo danh sách tất cả các thread cần xóa (bao gồm thread con)
+    const threadIdsToDelete: string[] = []
+
+    const getAllChildThreads = async (threadIds: string[]) => {
+      const children = await Thread.find({ parentId: { $in: threadIds } })
+
+      if (children.length === 0) return
+
+      const childIds = children.map((child) => child._id.toString())
+      threadIdsToDelete.push(...childIds)
+      await getAllChildThreads(childIds)
+    }
+
+    // Thêm các thread thuộc community vào danh sách xóa
+    threads.forEach((thread) => threadIdsToDelete.push(thread._id.toString()))
+
+    // Tìm tất cả các thread con và thêm vào danh sách
+    await getAllChildThreads(threadIdsToDelete)
+
+    // Xóa tất cả các thread trong danh sách
+    await Thread.deleteMany({ _id: { $in: threadIdsToDelete } })
+
+    // Cập nhật user:
+    // - Xóa communityId khỏi communities của user
+    // - Xóa các threadId khỏi threads của user
+    await User.updateMany(
+      { communities: deletedCommunity._id },
+      {
+        $pull: {
+          communities: deletedCommunity._id,
+          threads: { $in: threadIdsToDelete }
+        }
+      }
+    )
+
+    // 6. Xóa community
+    await Community.deleteOne({ _id: deletedCommunity._id })
 
     return deletedCommunity
   } catch (error) {
