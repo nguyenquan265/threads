@@ -4,6 +4,7 @@ import {
   addMemberToCommunity,
   createCommunity,
   deleteCommunity,
+  deleteCommunityV2,
   removeUserFromCommunity,
   updateCommunityInfo
 } from './community.webhook'
@@ -165,7 +166,7 @@ export const communityWebhook = asyncHandler(async (req: Request, res: Response,
       console.log('deleted', evnt?.data)
 
       // @ts-ignore
-      await deleteCommunity(id)
+      await deleteCommunityV2(id)
 
       return res.status(201).json({ message: 'Organization deleted' })
     } catch (err) {

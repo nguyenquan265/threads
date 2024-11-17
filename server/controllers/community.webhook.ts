@@ -152,20 +152,30 @@ export const addMemberToCommunity = async (communityClerkId: string, memberClerk
       throw new Error('User not found')
     }
 
-    // Check if the user is already a member of the community
-    if (community.members.includes(user._id)) {
-      throw new Error('User is already a member of the community')
+    // // Check if the user is already a member of the community
+    // if (community.members.includes(user._id)) {
+    //   throw new Error('User is already a member of the community')
+    // }
+
+    // // Add the user's _id to the members array in the community
+    // community.members.push(user._id)
+    // // await community.save()
+
+    // // Add the community's _id to the communities array in the user
+    // user.communities.push(community._id)
+    // // await user.save()
+
+    // await Promise.all([community.save(), user.save()])
+
+    if (!community.members.includes(user._id)) {
+      community.members.push(user._id)
+      await community.save()
     }
 
-    // Add the user's _id to the members array in the community
-    community.members.push(user._id)
-    // await community.save()
-
-    // Add the community's _id to the communities array in the user
-    user.communities.push(community._id)
-    // await user.save()
-
-    await Promise.all([community.save(), user.save()])
+    if (!user.communities.includes(community._id)) {
+      user.communities.push(community._id)
+      await user.save()
+    }
 
     return community
   } catch (error) {
@@ -301,7 +311,7 @@ export const deleteCommunityV2 = async (communityClerkId: string) => {
       }
     )
 
-    // 6. Xóa community
+    // Xóa community
     await Community.deleteOne({ _id: deletedCommunity._id })
 
     return deletedCommunity
