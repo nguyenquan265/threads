@@ -1,7 +1,7 @@
 import Community from '../models/community.model'
 import Thread from '../models/thread.model'
 import User from '../models/user.model'
-import { FilterQuery, SortOrder } from 'mongoose'
+// import { FilterQuery, SortOrder } from 'mongoose'
 
 export const createCommunity = async (
   clerkId: string,
@@ -40,101 +40,101 @@ export const createCommunity = async (
   }
 }
 
-export const getCommunityDetails = async (clerkId: string) => {
-  try {
-    const communityDetails = await Community.findOne({ clerkId }).populate([
-      'createdBy',
-      {
-        path: 'members',
-        model: User,
-        select: 'name username image _id clerkId'
-      }
-    ])
+// export const getCommunityDetails = async (clerkId: string) => {
+//   try {
+//     const communityDetails = await Community.findOne({ clerkId }).populate([
+//       'createdBy',
+//       {
+//         path: 'members',
+//         model: User,
+//         select: 'name username image _id clerkId'
+//       }
+//     ])
 
-    return communityDetails
-  } catch (error) {
-    throw error
-  }
-}
+//     return communityDetails
+//   } catch (error) {
+//     throw error
+//   }
+// }
 
-export const getCommunityPosts = async (objectId: string) => {
-  try {
-    const communityPosts = await Community.findById(objectId).populate({
-      path: 'threads',
-      model: Thread,
-      populate: [
-        {
-          path: 'author',
-          model: User,
-          select: 'name image clerkId _id' // Select the "name" and "_id" fields from the "User" model
-        },
-        {
-          path: 'children',
-          model: Thread,
-          populate: {
-            path: 'author',
-            model: User,
-            select: 'image clerkId _id' // Select the "name" and "_id" fields from the "User" model
-          }
-        }
-      ]
-    })
+// export const getCommunityPosts = async (objectId: string) => {
+//   try {
+//     const communityPosts = await Community.findById(objectId).populate({
+//       path: 'threads',
+//       model: Thread,
+//       populate: [
+//         {
+//           path: 'author',
+//           model: User,
+//           select: 'name image clerkId _id' // Select the "name" and "_id" fields from the "User" model
+//         },
+//         {
+//           path: 'children',
+//           model: Thread,
+//           populate: {
+//             path: 'author',
+//             model: User,
+//             select: 'image clerkId _id' // Select the "name" and "_id" fields from the "User" model
+//           }
+//         }
+//       ]
+//     })
 
-    return communityPosts
-  } catch (error) {
-    throw error
-  }
-}
+//     return communityPosts
+//   } catch (error) {
+//     throw error
+//   }
+// }
 
-export const getCommunities = async ({
-  searchString = '',
-  pageNumber = 1,
-  pageSize = 20,
-  sortBy = 'desc'
-}: {
-  searchString?: string
-  pageNumber?: number
-  pageSize?: number
-  sortBy?: SortOrder
-}) => {
-  try {
-    const skipAmount = (pageNumber - 1) * pageSize
+// export const getCommunities = async ({
+//   searchString = '',
+//   pageNumber = 1,
+//   pageSize = 20,
+//   sortBy = 'desc'
+// }: {
+//   searchString?: string
+//   pageNumber?: number
+//   pageSize?: number
+//   sortBy?: SortOrder
+// }) => {
+//   try {
+//     const skipAmount = (pageNumber - 1) * pageSize
 
-    // Create a case-insensitive regular expression for the provided search string.
-    const regex = new RegExp(searchString, 'i')
+//     // Create a case-insensitive regular expression for the provided search string.
+//     const regex = new RegExp(searchString, 'i')
 
-    // Create an initial query object to filter communities.
-    const query: FilterQuery<typeof Community> = {}
+//     // Create an initial query object to filter communities.
+//     const query: FilterQuery<typeof Community> = {}
 
-    // If the search string is not empty, add the $or operator to match either username or name fields.
-    if (searchString.trim() !== '') {
-      query.$or = [{ username: { $regex: regex } }, { name: { $regex: regex } }]
-    }
+//     // If the search string is not empty, add the $or operator to match either username or name fields.
+//     if (searchString.trim() !== '') {
+//       query.$or = [{ username: { $regex: regex } }, { name: { $regex: regex } }]
+//     }
 
-    // Define the sort options for the fetched communities based on createdAt field and provided sort order.
-    const sortOptions = { createdAt: sortBy }
+//     // Define the sort options for the fetched communities based on createdAt field and provided sort order.
+//     const sortOptions = { createdAt: sortBy }
 
-    // Create a query to fetch the communities based on the search and sort criteria.
-    const communitiesQuery = Community.find(query)
-      .sort(sortOptions)
-      .skip(skipAmount)
-      .limit(pageSize)
-      .populate('members')
+//     // Create a query to fetch the communities based on the search and sort criteria.
+//     const communitiesQuery = Community.find(query)
+//       .sort(sortOptions)
+//       .skip(skipAmount)
+//       .limit(pageSize)
+//       .populate('members')
 
-    // Count the total number of communities that match the search criteria (without pagination).
-    const [totalCommunitiesCount, communities] = await Promise.all([
-      Community.countDocuments(query),
-      communitiesQuery.exec()
-    ])
+//     // Count the total number of communities that match the search criteria (without pagination).
+//     const [totalCommunitiesCount, communities] = await Promise.all([
+//       Community.countDocuments(query),
+//       communitiesQuery.exec()
+//     ])
 
-    // Check if there are more communities beyond the current page.
-    const isNext = totalCommunitiesCount > skipAmount + communities.length
+//     // Check if there are more communities beyond the current page.
+//     const isNext = totalCommunitiesCount > skipAmount + communities.length
 
-    return { communities, isNext }
-  } catch (error) {
-    throw error
-  }
-}
+//     return { communities, isNext }
+//   } catch (error) {
+//     throw error
+//   }
+// }
 
 export const addMemberToCommunity = async (communityClerkId: string, memberClerkId: string) => {
   try {
