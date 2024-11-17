@@ -32,6 +32,8 @@ export const createCommunity = async (
     user.communities.push(createdCommunity._id)
     await user.save()
 
+    console.log(user)
+
     return createdCommunity
   } catch (error) {
     throw error
