@@ -9,6 +9,6 @@ const router = Router()
 router.use('/upload', uploadRoutes)
 router.use('/users', userRoutes)
 router.use('/threads', threadRoutes)
-router.use('/webhook/communities', communityRoutes)
+router.use('/communities', communityRoutes)
 
 export default router

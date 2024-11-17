@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { communityWebhook } from '../controllers/community.controller'
+import { communityWebhook, getCommunityDetails } from '../controllers/community.controller'
 
 const router = Router()
 
-router.route('/').post(communityWebhook)
+router.route('/webhook').post(communityWebhook)
+router.route('/:clerkId').get(getCommunityDetails)
 
 export default router
