@@ -90,7 +90,7 @@ export const getThreadByID = asyncHandler(async (req: Request, res: Response, ne
         {
           path: 'author', // Populate the author field within children
           model: User,
-          select: '_id clerkid name parentId image' // Select only _id and username fields of the author
+          select: '_id clerkId name image' // Select only _id and username fields of the author
         },
         {
           path: 'children', // Populate the children field within children
@@ -98,7 +98,7 @@ export const getThreadByID = asyncHandler(async (req: Request, res: Response, ne
           populate: {
             path: 'author', // Populate the author field within nested children
             model: User,
-            select: '_id clerkid name parentId image' // Select only _id and username fields of the author
+            select: '_id clerkId name image' // Select only _id and username fields of the author
           }
         }
       ]
