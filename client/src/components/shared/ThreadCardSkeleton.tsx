@@ -1,6 +1,6 @@
 import { Skeleton } from '../ui/skeleton'
 
-const SkeletonLoader = () => {
+const ThreadCardSkeleton = () => {
   return (
     <div className='flex items-start space-x-4 rounded-lg bg-dark-2 p-7'>
       {/* Avatar skeleton */}
@@ -27,4 +27,4 @@ const SkeletonLoader = () => {
   )
 }
 
-export default SkeletonLoader
+export default ThreadCardSkeleton
