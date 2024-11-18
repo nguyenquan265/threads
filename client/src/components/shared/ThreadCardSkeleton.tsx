@@ -8,7 +8,7 @@ const ThreadCardSkeleton = () => {
 
       <div className='space-y-3 flex-1'>
         {/* Username skeleton */}
-        <Skeleton className='h-5 w-[120px]' />
+        <Skeleton className='h-5 w-[20%]' />
 
         {/* Content skeleton - two lines */}
         <div className='space-y-2'>

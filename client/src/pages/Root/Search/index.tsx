@@ -1,12 +1,13 @@
 import { useGetUser, useGetUsers } from '@/apis/UserApi'
 import UserCard from '@/components/cards/UserCard'
+import SearchSkeleton from '@/components/shared/SearchSkeleton'
 import { Navigate } from 'react-router-dom'
 
 const SearchPage = () => {
-  const { data: userInfo, isLoading } = useGetUser()
-  const { data: result } = useGetUsers(1, 20, '')
+  const { data: userInfo, isLoading: isGetUserLoading } = useGetUser()
+  const { data: result, isLoading: isGetUsersListLoading } = useGetUsers(1, 20, '')
 
-  if (isLoading) {
+  if (isGetUserLoading) {
     return null
   }
 
@@ -19,6 +20,8 @@ const SearchPage = () => {
       <h1 className='head-text mb-10'>Search</h1>
 
       <div className='mt-14 flex flex-col gap-9'>
+        {isGetUsersListLoading && <SearchSkeleton />}
+
         {result?.users.length == 0 ? (
           <p className='no-result'>No users found</p>
         ) : (
