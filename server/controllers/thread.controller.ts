@@ -13,15 +13,14 @@ interface GetThreadsRequest extends Request {
 }
 
 export const getThreads = asyncHandler(async (req: GetThreadsRequest, res: Response, next: NextFunction) => {
-  const page = req.query.page ? parseInt(req.query.page) : 1
-  const limit = req.query.limit ? parseInt(req.query.limit) : 20
-  const skip = (page - 1) * limit
+  const { page = '1', limit = '20' } = req.query
+  const skip = (parseInt(page) - 1) * parseInt(limit)
 
   // Get all top-level threads
   const query = Thread.find({ parentId: { $in: [null, undefined] } })
     .sort({ createdAt: -1 })
     .skip(skip)
-    .limit(limit)
+    .limit(parseInt(limit))
     .populate({ path: 'author', model: User })
     .populate({
       path: 'community',
