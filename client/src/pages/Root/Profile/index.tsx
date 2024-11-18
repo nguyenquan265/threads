@@ -11,35 +11,41 @@ const ProfilePage = () => {
   const { data: userInfo, isLoading } = useGetUser(id)
   const { user } = useUser()
 
-  if (isLoading) {
+  if (isLoading || !user) {
     return null
   }
 
-  if (!id && !userInfo?.onboarded) {
-    return <Navigate to='/onboarding' />
-  }
+  if (!id) {
+    if (!userInfo?.onboarded) {
+      return <Navigate to='/onboarding' />
+    }
+  } else {
+    if (!userInfo) {
+      return (
+        <section className='mt-9 flex flex-col gap-10'>
+          <p className='no-result'>User not found</p>
+        </section>
+      )
+    }
 
-  if (!userInfo) {
-    return (
-      <section className='mt-9 flex flex-col gap-10'>
-        <p className='no-result'>User not found</p>
-      </section>
-    )
-  }
+    if (id == user.id && !userInfo.onboarded) {
+      return <Navigate to='/onboarding' />
+    }
 
-  if (id && !userInfo.onboarded) {
-    return (
-      <section className='mt-9 flex flex-col gap-10'>
-        <p className='no-result'>This user has not completed onboarding yet.</p>
-      </section>
-    )
+    if (!userInfo.onboarded) {
+      return (
+        <section className='mt-9 flex flex-col gap-10'>
+          <p className='no-result'>This user has not completed onboarding yet.</p>
+        </section>
+      )
+    }
   }
 
   return (
     <section>
       <ProfileHeader
         accountId={userInfo.clerkId}
-        currentUserId={user?.id || ''}
+        currentUserId={user.id}
         name={userInfo.name}
         username={userInfo.username}
         imgUrl={userInfo.image}
@@ -63,11 +69,17 @@ const ProfilePage = () => {
             ))}
           </TabsList>
 
-          {profileTabs.map((tab) => (
-            <TabsContent key={`content-${tab.label}`} value={tab.value} className='w-full text-light-1'>
-              <ThreadsTab accountId={userInfo.clerkId} currentUserId={user?.id || ''} accountType='User' />
-            </TabsContent>
-          ))}
+          <TabsContent value='threads' className='w-full text-light-1'>
+            <ThreadsTab accountId={userInfo.clerkId} currentUserId={user.id} accountType='User' />
+          </TabsContent>
+
+          <TabsContent value='replies' className='w-full text-light-1'>
+            <p className='no-result'>Future feature</p>
+          </TabsContent>
+
+          <TabsContent value='tagged' className='w-full text-light-1'>
+            <p className='no-result'>Future feature</p>
+          </TabsContent>
         </Tabs>
       </div>
     </section>

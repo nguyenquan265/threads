@@ -43,6 +43,8 @@ const Home = () => {
           </>
         )}
       </section>
+
+      {/* TODO: Pagination */}
     </>
   )
 }

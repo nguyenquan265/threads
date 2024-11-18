@@ -11,6 +11,7 @@ type Props = {
 
 const UserCard = ({ id, name, username, imgUrl, personType }: Props) => {
   const navigate = useNavigate()
+  const isCommunity = personType === 'Community'
 
   return (
     <article className='user-card'>
@@ -23,7 +24,16 @@ const UserCard = ({ id, name, username, imgUrl, personType }: Props) => {
         </div>
       </div>
 
-      <Button className='user-card_btn' onClick={() => navigate(`/profile/${id}`)}>
+      <Button
+        className='user-card_btn'
+        onClick={() => {
+          if (isCommunity) {
+            navigate(`/community/${id}`)
+          } else {
+            navigate(`/profile/${id}`)
+          }
+        }}
+      >
         View
       </Button>
     </article>

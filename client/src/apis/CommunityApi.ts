@@ -45,13 +45,18 @@ export const useGetCommunityPosts = (communityClerkId?: string) => {
   return { data, isLoading }
 }
 
+type GetCommunitiesResponse = {
+  communities: Community[]
+  isNext: boolean
+}
+
 export const useGetCommunities = (
-  searchString: string = '',
   page: number = 1,
   limit: number = 20,
+  searchString: string = '',
   sortby: string = 'desc'
 ) => {
-  const createGetCommunitiesRequest = async (): Promise<Community[]> => {
+  const createGetCommunitiesRequest = async (): Promise<GetCommunitiesResponse> => {
     const res = await fetch(
       `${API_BASE_URL}/api/v1/communities?page=${page}&limit=${limit}&searchString=${searchString}&sortby=${sortby}`
     )

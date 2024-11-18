@@ -19,6 +19,8 @@ const SearchPage = () => {
     <section>
       <h1 className='head-text mb-10'>Search</h1>
 
+      {/* TODO: SearchBar */}
+
       <div className='mt-14 flex flex-col gap-9'>
         {isGetUsersListLoading && <SearchSkeleton />}
 
@@ -39,6 +41,8 @@ const SearchPage = () => {
           </>
         )}
       </div>
+
+      {/* TODO: Pagination */}
     </section>
   )
 }

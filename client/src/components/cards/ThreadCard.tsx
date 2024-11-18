@@ -32,8 +32,8 @@ type Props = {
 
 const ThreadCard = ({
   id,
-  currentUserId,
-  parentId,
+  // currentUserId,
+  // parentId,
   content,
   author,
   community,
@@ -109,25 +109,46 @@ const ThreadCard = ({
         </div>
 
         {/* Delete thread */}
-
-        {/* Show comments logo */}
       </div>
 
-      {/* Show community of the post (if have) */}
-      {!isComment && community && (
-        <Link to={`/communities/${community.clerkId}`} className='mt-5 flex items-center'>
+      {!isComment && comments.length > 0 && (
+        <div className='ml-1 mt-3 flex items-center gap-2'>
+          {comments.slice(0, 2).map((comment, index) => (
+            <img
+              key={index}
+              src={comment.author.image}
+              alt={`user_${index}`}
+              width={24}
+              height={24}
+              className={`${index !== 0 && '-ml-5'} rounded-full object-cover`}
+            />
+          ))}
+
+          <Link to={`/thread/${id}`}>
+            <p className='mt-1 text-subtle-medium text-gray-1'>
+              {comments.length} repl{comments.length > 1 ? 'ies' : 'y'}
+            </p>
+          </Link>
+        </div>
+      )}
+
+      {/* Show community and createdAt time of the post (if have) */}
+      {!isComment && (
+        <Link to={community ? `/community/${community.clerkId}` : `/thread/${id}`} className='mt-5 flex items-center'>
           <p className='text-subtle-medium text-gray-1'>
-            {formatDateString(community.createdAt)} - {community.name} Community
+            {formatDateString(createdAt)} {community && `- ${community.name} Community`}
           </p>
 
-          <img
-            src={community.image}
-            alt={community.name}
-            width={14}
-            height={14}
-            className='ml-1 rounded-full object-cover'
-            loading='lazy'
-          />
+          {community && (
+            <img
+              src={community.image}
+              alt={community.name}
+              width={14}
+              height={14}
+              className='ml-1 rounded-full object-cover'
+              loading='lazy'
+            />
+          )}
         </Link>
       )}
     </article>
