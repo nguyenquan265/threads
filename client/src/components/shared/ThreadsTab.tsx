@@ -19,7 +19,7 @@ const ThreadsTab = ({ accountId, accountType, currentUserId }: Props) => {
   if (accountType === 'Community') {
     result = useGetCommunityPosts(accountId)
   } else {
-    result = useGetUserPosts(accountId)
+    result = useGetUserPosts(accountId, currentUserId)
   }
 
   const { data, isLoading } = result
