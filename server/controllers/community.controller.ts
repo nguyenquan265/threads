@@ -4,7 +4,6 @@ import {
   addMemberToCommunity,
   createCommunity,
   deleteCommunity,
-  deleteCommunityV2,
   removeUserFromCommunity,
   updateCommunityInfo
 } from './community.webhook'
@@ -170,7 +169,7 @@ export const communityWebhook = asyncHandler(async (req: Request, res: Response,
       console.log('deleted', evnt?.data)
 
       // @ts-ignore
-      await deleteCommunityV2(id)
+      await deleteCommunity(id)
 
       return res.status(201).json({ message: 'Organization deleted' })
     } catch (err) {
@@ -201,81 +200,71 @@ export const getCommunityDetails = asyncHandler(async (req: Request, res: Respon
   res.status(200).json(communityDetails)
 })
 
-export const getCommunityPosts = async (objectId: string) => {
-  try {
-    const communityPosts = await Community.findById(objectId).populate({
-      path: 'threads',
-      model: Thread,
-      populate: [
-        {
+export const getCommunityPosts = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const communityPosts = await Community.findOne({ clerkId: req.params.clerkId }).populate({
+    path: 'threads',
+    model: Thread,
+    populate: [
+      {
+        path: 'author',
+        model: User,
+        select: 'name image clerkId _id'
+      },
+      {
+        path: 'community',
+        model: Community,
+        select: 'name clerkId image _id createdAt'
+      },
+      {
+        path: 'children',
+        model: Thread,
+        populate: {
           path: 'author',
           model: User,
-          select: 'name image clerkId _id' // Select the "name" and "_id" fields from the "User" model
-        },
-        {
-          path: 'children',
-          model: Thread,
-          populate: {
-            path: 'author',
-            model: User,
-            select: 'image clerkId _id' // Select the "name" and "_id" fields from the "User" model
-          }
+          select: 'image clerkId _id'
         }
-      ]
-    })
+      }
+    ]
+  })
 
-    return communityPosts
-  } catch (error) {
-    throw error
+  if (!communityPosts) {
+    throw new ApiError(404, 'Community not found')
+  }
+
+  res.status(200).json(communityPosts)
+})
+
+interface GetCommunitiesRequest extends Request {
+  query: {
+    searchString?: string
+    page?: string
+    limit?: string
+    sortBy?: string
   }
 }
 
-export const getCommunities = async ({
-  searchString = '',
-  pageNumber = 1,
-  pageSize = 20,
-  sortBy = 'desc'
-}: {
-  searchString?: string
-  pageNumber?: number
-  pageSize?: number
-  sortBy?: SortOrder
-}) => {
-  try {
-    const skipAmount = (pageNumber - 1) * pageSize
+export const getCommunities = asyncHandler(async (req: GetCommunitiesRequest, res: Response, next: NextFunction) => {
+  const { searchString = '', page = '1', limit = '20', sortBy = 'desc' } = req.query
+  const skip = (parseInt(page) - 1) * parseInt(limit)
 
-    // Create a case-insensitive regular expression for the provided search string.
-    const regex = new RegExp(searchString, 'i')
+  const regex = new RegExp(searchString, 'i')
 
-    // Create an initial query object to filter communities.
-    const query: FilterQuery<typeof Community> = {}
+  const query: FilterQuery<typeof Community> = {}
 
-    // If the search string is not empty, add the $or operator to match either username or name fields.
-    if (searchString.trim() !== '') {
-      query.$or = [{ username: { $regex: regex } }, { name: { $regex: regex } }]
-    }
+  if (searchString.trim() !== '') {
+    query.$or = [{ username: { $regex: regex } }, { name: { $regex: regex } }]
+  }
 
-    // Define the sort options for the fetched communities based on createdAt field and provided sort order.
-    const sortOptions = { createdAt: sortBy }
-
-    // Create a query to fetch the communities based on the search and sort criteria.
-    const communitiesQuery = Community.find(query)
-      .sort(sortOptions)
-      .skip(skipAmount)
-      .limit(pageSize)
+  const [totalCommunitiesCount, communities] = await Promise.all([
+    Community.countDocuments(query),
+    Community.find(query)
+      .sort({ createdAt: sortBy as SortOrder })
+      .skip(skip)
+      .limit(parseInt(limit))
       .populate('members')
+  ])
 
-    // Count the total number of communities that match the search criteria (without pagination).
-    const [totalCommunitiesCount, communities] = await Promise.all([
-      Community.countDocuments(query),
-      communitiesQuery.exec()
-    ])
+  const isNext = totalCommunitiesCount > skip + communities.length
 
-    // Check if there are more communities beyond the current page.
-    const isNext = totalCommunitiesCount > skipAmount + communities.length
-
-    return { communities, isNext }
-  } catch (error) {
-    throw error
-  }
-}
+  res.status(200).json({ communities, isNext })
+})

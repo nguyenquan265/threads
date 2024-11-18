@@ -1,7 +1,6 @@
 import Community from '../models/community.model'
 import Thread from '../models/thread.model'
 import User from '../models/user.model'
-// import { FilterQuery, SortOrder } from 'mongoose'
 
 export const createCommunity = async (
   clerkId: string,
@@ -39,102 +38,6 @@ export const createCommunity = async (
     throw error
   }
 }
-
-// export const getCommunityDetails = async (clerkId: string) => {
-//   try {
-//     const communityDetails = await Community.findOne({ clerkId }).populate([
-//       'createdBy',
-//       {
-//         path: 'members',
-//         model: User,
-//         select: 'name username image _id clerkId'
-//       }
-//     ])
-
-//     return communityDetails
-//   } catch (error) {
-//     throw error
-//   }
-// }
-
-// export const getCommunityPosts = async (objectId: string) => {
-//   try {
-//     const communityPosts = await Community.findById(objectId).populate({
-//       path: 'threads',
-//       model: Thread,
-//       populate: [
-//         {
-//           path: 'author',
-//           model: User,
-//           select: 'name image clerkId _id' // Select the "name" and "_id" fields from the "User" model
-//         },
-//         {
-//           path: 'children',
-//           model: Thread,
-//           populate: {
-//             path: 'author',
-//             model: User,
-//             select: 'image clerkId _id' // Select the "name" and "_id" fields from the "User" model
-//           }
-//         }
-//       ]
-//     })
-
-//     return communityPosts
-//   } catch (error) {
-//     throw error
-//   }
-// }
-
-// export const getCommunities = async ({
-//   searchString = '',
-//   pageNumber = 1,
-//   pageSize = 20,
-//   sortBy = 'desc'
-// }: {
-//   searchString?: string
-//   pageNumber?: number
-//   pageSize?: number
-//   sortBy?: SortOrder
-// }) => {
-//   try {
-//     const skipAmount = (pageNumber - 1) * pageSize
-
-//     // Create a case-insensitive regular expression for the provided search string.
-//     const regex = new RegExp(searchString, 'i')
-
-//     // Create an initial query object to filter communities.
-//     const query: FilterQuery<typeof Community> = {}
-
-//     // If the search string is not empty, add the $or operator to match either username or name fields.
-//     if (searchString.trim() !== '') {
-//       query.$or = [{ username: { $regex: regex } }, { name: { $regex: regex } }]
-//     }
-
-//     // Define the sort options for the fetched communities based on createdAt field and provided sort order.
-//     const sortOptions = { createdAt: sortBy }
-
-//     // Create a query to fetch the communities based on the search and sort criteria.
-//     const communitiesQuery = Community.find(query)
-//       .sort(sortOptions)
-//       .skip(skipAmount)
-//       .limit(pageSize)
-//       .populate('members')
-
-//     // Count the total number of communities that match the search criteria (without pagination).
-//     const [totalCommunitiesCount, communities] = await Promise.all([
-//       Community.countDocuments(query),
-//       communitiesQuery.exec()
-//     ])
-
-//     // Check if there are more communities beyond the current page.
-//     const isNext = totalCommunitiesCount > skipAmount + communities.length
-
-//     return { communities, isNext }
-//   } catch (error) {
-//     throw error
-//   }
-// }
 
 export const addMemberToCommunity = async (communityClerkId: string, memberClerkId: string) => {
   try {
@@ -233,37 +136,6 @@ export const updateCommunityInfo = async (communityClerkId: string, name: string
 }
 
 export const deleteCommunity = async (communityClerkId: string) => {
-  try {
-    // Find the community by its ID and delete it
-    const deletedCommunity = await Community.findOneAndDelete({
-      clerkId: communityClerkId
-    })
-
-    if (!deletedCommunity) {
-      throw new Error('Community not found')
-    }
-
-    // Delete all threads associated with the community
-    await Thread.deleteMany({ community: deletedCommunity._id })
-
-    // Find all users who are part of the community
-    const communityUsers = await User.find({ communities: deletedCommunity._id })
-
-    // Remove the community from the 'communities' array for each user
-    const updateUserPromises = communityUsers.map((user) => {
-      user.communities.pull(deletedCommunity._id)
-      return user.save()
-    })
-
-    await Promise.all(updateUserPromises)
-
-    return deletedCommunity
-  } catch (error) {
-    throw error
-  }
-}
-
-export const deleteCommunityV2 = async (communityClerkId: string) => {
   try {
     const deletedCommunity = await Community.findOneAndDelete({
       clerkId: communityClerkId

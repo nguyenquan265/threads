@@ -18,8 +18,8 @@ interface GetUserRequest extends Request {
 }
 
 export const getUsers = asyncHandler(async (req: GetUserRequest, res: Response, next: NextFunction) => {
-  const { userId, page, limit, searchString, sortBy } = req.query
-  const skip = ((page ? parseInt(page) : 1) - 1) * (limit ? parseInt(limit) : 20)
+  const { userId, page = '1', limit = '20', searchString = '', sortBy = 'desc' } = req.query
+  const skip = (parseInt(page) - 1) * parseInt(limit)
 
   const regex = new RegExp(searchString || '', 'i')
 
@@ -41,9 +41,9 @@ export const getUsers = asyncHandler(async (req: GetUserRequest, res: Response, 
   const [totalUsers, users] = await Promise.all([
     User.countDocuments(query),
     User.find(query)
-      .sort({ createdAt: sortBy ? (sortBy as SortOrder) : 'desc' })
+      .sort({ createdAt: sortBy as SortOrder })
       .skip(skip)
-      .limit(limit ? parseInt(limit) : 20)
+      .limit(parseInt(limit))
   ])
 
   const isNext = totalUsers > skip + users.length
