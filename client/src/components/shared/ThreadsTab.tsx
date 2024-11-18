@@ -2,6 +2,7 @@ import { useGetUserPosts } from '@/apis/UserApi'
 import ThreadCard from '../cards/ThreadCard'
 import { Community, User } from '@/type'
 import { useGetCommunityPosts } from '@/apis/CommunityApi'
+import ThreadCardSkeleton from './ThreadCardSkeleton'
 
 type Props = {
   currentUserId: string
@@ -23,16 +24,18 @@ const ThreadsTab = ({ accountId, accountType, currentUserId }: Props) => {
 
   const { data, isLoading } = result
 
-  if (isLoading) {
-    return null
-  }
-
   if (!data) {
-    return null
+    return (
+      <section className='mt-9 flex flex-col gap-10'>
+        <p className='no-result'>Something wrong! Please try again.</p>
+      </section>
+    )
   }
 
   return (
     <section className='mt-9 flex flex-col gap-10'>
+      {isLoading && <ThreadCardSkeleton />}
+
       {data.threads.length === 0 ? (
         <p className='no-result'>
           {accountType === 'User' ? 'This user has not posted any threads yet' : 'This community has no threads yet'}

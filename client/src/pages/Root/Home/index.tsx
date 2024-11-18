@@ -1,14 +1,14 @@
 import { useGetPosts } from '@/apis/ThreadApi'
 import { useGetUser } from '@/apis/UserApi'
-import ThreadCard from '@/components/cards/ThreadCard'
-// import Loader from '@/components/shared/Loader'
 import { Navigate } from 'react-router-dom'
+import ThreadCard from '@/components/cards/ThreadCard'
+import ThreadCardSkeleton from '@/components/shared/ThreadCardSkeleton'
 
 const Home = () => {
   const { data: userInfo, isLoading: isUserLoading } = useGetUser()
   const { data: result, isLoading: isPostsLoading } = useGetPosts()
 
-  if (isUserLoading || isPostsLoading) {
+  if (isUserLoading) {
     return null
   }
 
@@ -21,6 +21,8 @@ const Home = () => {
       <h1 className='head-text text-left'>Home</h1>
 
       <section className='mt-9 flex flex-col gap-10'>
+        {isPostsLoading && <ThreadCardSkeleton />}
+
         {result?.posts.length === 0 ? (
           <p className='no-result'>No threads found</p>
         ) : (

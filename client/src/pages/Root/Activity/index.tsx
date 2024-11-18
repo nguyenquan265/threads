@@ -1,11 +1,12 @@
 import { useGetUser, useGetUserActivities } from '@/apis/UserApi'
+import ActivitySkeleton from '@/components/shared/ActivitySkeleton'
 import { Link, Navigate } from 'react-router-dom'
 
 const ActivityPage = () => {
-  const { data: userInfo, isLoading } = useGetUser()
-  const { data: activities } = useGetUserActivities(userInfo?._id)
+  const { data: userInfo, isLoading: isGetUserLoading } = useGetUser()
+  const { data: activities, isLoading: isGetActivitiesLoading } = useGetUserActivities(userInfo?._id)
 
-  if (isLoading) {
+  if (isGetUserLoading) {
     return null
   }
 
@@ -18,6 +19,8 @@ const ActivityPage = () => {
       <h1 className='head-text mb-10'>Activity</h1>
 
       <section className='mt-10 flex flex-col gap-5'>
+        {isGetActivitiesLoading && <ActivitySkeleton />}
+
         {activities && activities?.length > 0 ? (
           activities?.map((activity) => (
             <Link key={activity._id} to={`/thread/${activity.parentId}`}>
