@@ -51,13 +51,16 @@ export const useGetUser = (clerkId?: string) => {
   const { data, isLoading } = useQuery({
     queryKey: ['user', clerkId ? { clerkId } : { clerkId: currentUserclerkId }],
     queryFn: createGetUserRequest,
-    enabled: clerkId ? !!clerkId : !!currentUserclerkId
+    enabled: clerkId ? !!clerkId : !!currentUserclerkId,
+    staleTime: clerkId ? 0 : 1000 * 60 * 5 // Disable cache for other users, cache for current user
   })
 
   return { data, isLoading }
 }
 
 export const useGetUserPosts = (clerkId: string) => {
+  const { userId: currentUserclerkId } = useAuth()
+
   const createGetUserPostsRequest = async (): Promise<User> => {
     const res = await fetch(`${API_BASE_URL}/api/v1/users/${clerkId}/posts`)
 
@@ -71,7 +74,8 @@ export const useGetUserPosts = (clerkId: string) => {
   const { data, isLoading } = useQuery({
     queryKey: ['userPosts', { clerkId }],
     queryFn: createGetUserPostsRequest,
-    enabled: !!clerkId
+    enabled: !!clerkId,
+    staleTime: currentUserclerkId !== clerkId ? 0 : 1000 * 60 * 5 // Disable cache for other users, cache for current user
   })
 
   return { data, isLoading }
@@ -105,7 +109,8 @@ export const useGetUsers = (
   const { data, isLoading } = useQuery({
     queryKey: ['users', { page }, { limit }, { searchString }, { sortBy }],
     queryFn: createGetUsersRequest,
-    enabled: !!currentUserclerkId
+    enabled: !!currentUserclerkId,
+    staleTime: 0
   })
 
   return { data, isLoading }

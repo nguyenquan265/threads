@@ -77,7 +77,8 @@ export const useGetSingleThread = (objectId: string) => {
 
   const { data, isLoading } = useQuery({
     queryKey: ['thread', { objectId }],
-    queryFn: getSingleThreadRequest
+    queryFn: getSingleThreadRequest,
+    staleTime: 0
   })
 
   return { data, isLoading }
