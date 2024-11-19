@@ -1,5 +1,6 @@
 import { useGetUser, useGetUserActivities } from '@/apis/UserApi'
 import ActivitySkeleton from '@/components/shared/ActivitySkeleton'
+import formatDateString from '@/helpers/formatDateString'
 import { Link, Navigate } from 'react-router-dom'
 
 const ActivityPage = () => {
@@ -37,6 +38,8 @@ const ActivityPage = () => {
                 <p className='!text-small-regular text-light-1'>
                   <span className='mr-1 text-primary-500'>{activity.author.name}</span> replied to your thread
                 </p>
+
+                <p className='text-subtle-medium text-gray-1 ml-auto'>{formatDateString(activity.createdAt)}</p>
               </article>
             </Link>
           ))
