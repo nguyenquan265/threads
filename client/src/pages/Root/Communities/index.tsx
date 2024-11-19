@@ -2,11 +2,16 @@ import { useGetCommunities } from '@/apis/CommunityApi'
 import { useGetUser } from '@/apis/UserApi'
 import CommunityCard from '@/components/cards/CommunityCard'
 import CommunityCardSkeleton from '@/components/shared/CommunityCardSkeleton'
-import { Navigate } from 'react-router-dom'
+import Pagination from '@/components/shared/Pagination'
+import SearchBar from '@/components/shared/SearchBar'
+import { Navigate, useSearchParams } from 'react-router-dom'
 
 const CommunitiesPage = () => {
+  const [searchParams] = useSearchParams()
+  const pageNumber = searchParams.get('page') ? Number(searchParams.get('page')) : 1
+  const searchQuery = searchParams.get('q') ? String(searchParams.get('q')) : ''
   const { data: userInfo, isLoading: isGetUserLoading } = useGetUser()
-  const { data: result, isLoading: isGetCommunitiesLoading } = useGetCommunities(1, 20, '')
+  const { data: result, isLoading: isGetCommunitiesLoading } = useGetCommunities(searchQuery, pageNumber)
 
   if (isGetUserLoading) {
     return null
@@ -18,9 +23,9 @@ const CommunitiesPage = () => {
 
   return (
     <>
-      <h1 className='head-text'>Communities</h1>
+      <h1 className='head-text mb-10'>Communities</h1>
 
-      {/* TODO: SearchBar */}
+      <SearchBar path='/communities' />
 
       <section className='mt-9 flex flex-wrap gap-4'>
         {isGetCommunitiesLoading && <CommunityCardSkeleton />}
@@ -44,7 +49,7 @@ const CommunitiesPage = () => {
         )}
       </section>
 
-      {/* TODO: Pagination */}
+      <Pagination pageNumber={pageNumber} isNext={result ? result.isNext : false} path='/communities' />
     </>
   )
 }

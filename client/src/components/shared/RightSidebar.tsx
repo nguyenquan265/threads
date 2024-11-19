@@ -5,7 +5,7 @@ import SearchSkeleton from './SearchSkeleton'
 
 const RightSidebar = () => {
   const { data: usersResult, isLoading: isGetUsersLoading } = useGetUsers('', 1)
-  const { data: communitiesResult, isLoading: isGetCommunitiesLoading } = useGetCommunities(1, 20, '', 'desc')
+  const { data: communitiesResult, isLoading: isGetCommunitiesLoading } = useGetCommunities('', 1)
 
   return (
     <section className='custom-scrollbar rightsidebar'>

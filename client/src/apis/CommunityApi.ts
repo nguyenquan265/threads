@@ -51,9 +51,9 @@ type GetCommunitiesResponse = {
 }
 
 export const useGetCommunities = (
-  page: number = 1,
-  limit: number = 20,
   searchString: string = '',
+  page: number = 1,
+  limit: number = 2,
   sortby: string = 'desc'
 ) => {
   const createGetCommunitiesRequest = async (): Promise<GetCommunitiesResponse> => {
