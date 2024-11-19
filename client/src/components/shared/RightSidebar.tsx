@@ -4,7 +4,7 @@ import UserCard from '../cards/UserCard'
 import SearchSkeleton from './SearchSkeleton'
 
 const RightSidebar = () => {
-  const { data: usersResult, isLoading: isGetUsersLoading } = useGetUsers(1, 20, '', 'desc')
+  const { data: usersResult, isLoading: isGetUsersLoading } = useGetUsers('', 1)
   const { data: communitiesResult, isLoading: isGetCommunitiesLoading } = useGetCommunities(1, 20, '', 'desc')
 
   return (

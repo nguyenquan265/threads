@@ -22,7 +22,7 @@ const Pagination = ({ pageNumber, isNext, path }: Props) => {
     if (nextPageNumber > 1) {
       navigate(`${path}?page=${nextPageNumber}`, { replace: true })
     } else {
-      navigate(`${path}`, { replace: true })
+      navigate(path, { replace: true })
     }
   }
 

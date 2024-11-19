@@ -85,9 +85,9 @@ type GetUsersResponse = {
 }
 
 export const useGetUsers = (
-  page: number = 1,
-  limit: number = 20,
   searchString: string = '',
+  page: number = 1,
+  limit: number = 2,
   sortBy: string = 'desc'
 ) => {
   const { userId: currentUserclerkId } = useAuth()
