@@ -1,6 +1,6 @@
 import { useGetPosts } from '@/apis/ThreadApi'
 import { useGetUser } from '@/apis/UserApi'
-import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
+import { Navigate, useSearchParams } from 'react-router-dom'
 import ThreadCard from '@/components/cards/ThreadCard'
 import ThreadCardSkeleton from '@/components/shared/ThreadCardSkeleton'
 import Pagination from '@/components/shared/Pagination'
