@@ -1,12 +1,15 @@
 import { useGetPosts } from '@/apis/ThreadApi'
 import { useGetUser } from '@/apis/UserApi'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import ThreadCard from '@/components/cards/ThreadCard'
 import ThreadCardSkeleton from '@/components/shared/ThreadCardSkeleton'
+import Pagination from '@/components/shared/Pagination'
 
 const Home = () => {
+  const [searchParams] = useSearchParams()
+  const pageNumber = searchParams.get('page') ? Number(searchParams.get('page')) : 1
   const { data: userInfo, isLoading: isUserLoading } = useGetUser()
-  const { data: result, isLoading: isPostsLoading } = useGetPosts()
+  const { data: result, isLoading: isPostsLoading } = useGetPosts(pageNumber)
 
   if (isUserLoading) {
     return null
@@ -44,7 +47,7 @@ const Home = () => {
         )}
       </section>
 
-      {/* TODO: Pagination */}
+      <Pagination pageNumber={pageNumber} isNext={result ? result.isNext : false} path='/' />
     </>
   )
 }

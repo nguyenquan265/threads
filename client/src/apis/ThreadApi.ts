@@ -10,7 +10,7 @@ type GetPostsResponse = {
   isNext: boolean
 }
 
-export const useGetPosts = (page: number = 1, limit: number = 20) => {
+export const useGetPosts = (page: number = 1, limit: number = 2) => {
   const getPostsRequest = async (): Promise<GetPostsResponse> => {
     const res = await fetch(`${API_BASE_URL}/api/v1/threads?page=${page}&limit=${limit}`)
 
