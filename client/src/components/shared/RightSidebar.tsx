@@ -2,17 +2,23 @@ import { useGetCommunities } from '@/apis/CommunityApi'
 import { useGetUsers } from '@/apis/UserApi'
 import UserCard from '../cards/UserCard'
 import SearchSkeleton from './SearchSkeleton'
+import { useLocation } from 'react-router-dom'
 
 const RightSidebar = () => {
   const { data: usersResult, isLoading: isGetUsersLoading } = useGetUsers('', 1)
   const { data: communitiesResult, isLoading: isGetCommunitiesLoading } = useGetCommunities('', 1)
+  const location = useLocation()
+
+  if (location.pathname.startsWith('/conversations')) {
+    return null
+  }
 
   return (
     <section className='custom-scrollbar rightsidebar'>
       <div className='flex flex-1 flex-col justify-start'>
         <h3 className='text-heading4-medium text-light-1'>Suggested communities</h3>
 
-        <div className='mt-7 flex w-[350px] flex-col gap-9'>
+        <div className='mt-7 flex w-[300px] flex-col gap-9'>
           {isGetCommunitiesLoading && <SearchSkeleton />}
 
           {communitiesResult && communitiesResult.communities.length > 0 ? (
@@ -36,7 +42,7 @@ const RightSidebar = () => {
       <div className='flex flex-1 flex-col justify-start'>
         <h3 className='text-heading4-medium text-light-1'>Similar Minds</h3>
 
-        <div className='mt-7 flex w-[350px] flex-col gap-10'>
+        <div className='mt-7 flex w-[300px] flex-col gap-10'>
           {isGetUsersLoading && <SearchSkeleton />}
 
           {usersResult && usersResult.users.length > 0 ? (

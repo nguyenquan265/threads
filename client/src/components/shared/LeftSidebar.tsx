@@ -6,9 +6,13 @@ import LogOut from '@/assets/logout.svg'
 const LeftSidebar = () => {
   const location = useLocation()
 
+  if (location.pathname.startsWith('/conversations')) {
+    return null
+  }
+
   return (
     <section className='custom-scrollbar leftsidebar'>
-      <div className='flex w-full flex-1 flex-col gap-6 px-6'>
+      <div className='flex w-full flex-1 flex-col gap-4 px-6'>
         {sidebarLinks.map((link, index) => {
           const isActive =
             (location.pathname.includes(link.route) && link.route.length > 1) || location.pathname == link.route
