@@ -19,8 +19,8 @@ const UserCard = ({ id, name, username, imgUrl, personType }: Props) => {
         <img src={imgUrl} alt='avatar' width={48} height={48} className='rounded-full' loading='lazy' />
 
         <div className='flex-1 text-ellipsis'>
-          <h4 className='text-base-semibold text-light-1'>{name}</h4>
-          <p className='text-small-medium text-gray-1'>{username}</p>
+          <h4 className='text-base-semibold text-light-1 truncate w-40'>{name}</h4>
+          <p className='text-small-medium text-gray-1 truncate w-40'>{username}</p>
         </div>
       </div>
 
