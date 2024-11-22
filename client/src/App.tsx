@@ -12,6 +12,7 @@ import SearchPage from './pages/Root/Search'
 import ActivityPage from './pages/Root/Activity'
 import CommunitiesPage from './pages/Root/Communities'
 import SingleCommunityPage from './pages/Root/SingleCommunity'
+import ConversationsPage from './pages/Root/Conversations'
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,11 @@ const router = createBrowserRouter([
       {
         path: '/community/:id',
         element: <SingleCommunityPage />
+      },
+      // TODO: Conversation page
+      {
+        path: '/conversations',
+        element: <ConversationsPage />
       }
     ]
   },
