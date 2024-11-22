@@ -39,6 +39,11 @@ export const sidebarLinks = [
     imgURL: User,
     route: '/profile',
     label: 'Profile'
+  },
+  {
+    imgURL: 'https://img.icons8.com/windows/32/FFFFFF/chat.png',
+    route: '/conversations',
+    label: 'Message'
   }
 ]
 
