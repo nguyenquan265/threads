@@ -36,3 +36,26 @@ export type Community = {
   createdAt: string
   updatedAt: string
 }
+
+export type Conversation = {
+  _id: string
+  participants: User[]
+  lastMessage: {
+    text: string
+    sender: User
+    seen: boolean
+  }
+  createdAt: string
+  updatedAt: string
+}
+
+export type Message = {
+  _id: string
+  conversationId: string
+  sender: User
+  text: string
+  seen: boolean
+  img: string
+  createdAt: string
+  updatedAt: string
+}
