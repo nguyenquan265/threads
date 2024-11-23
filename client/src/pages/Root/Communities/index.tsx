@@ -25,7 +25,7 @@ const CommunitiesPage = () => {
     <>
       <h1 className='head-text mb-10'>Communities</h1>
 
-      <SearchBar path='/communities' />
+      <SearchBar path='/communities' text='Search communities' />
 
       <section className='mt-9 flex flex-wrap gap-4'>
         {isGetCommunitiesLoading && <CommunityCardSkeleton />}

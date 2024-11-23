@@ -3,10 +3,10 @@ import { Input } from '../ui/input'
 import SearchIcon from '@/assets/search-gray.svg'
 import { useEffect, useState } from 'react'
 
-type Props = { path: string }
+type Props = { path: string; text: string }
 
-const SearchBar = ({ path }: Props) => {
-  const [search, setSearch] = useState<string>()
+const SearchBar = ({ path, text }: Props) => {
+  const [search, setSearch] = useState<string>('')
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const SearchBar = ({ path }: Props) => {
         id='text'
         value={search}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-        placeholder={`${path !== '/search' ? 'Search communities' : 'Search creators'}`}
+        placeholder={text}
         className='no-focus searchbar_input'
       />
     </div>

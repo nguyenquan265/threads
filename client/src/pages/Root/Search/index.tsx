@@ -24,7 +24,7 @@ const SearchPage = () => {
     <section>
       <h1 className='head-text mb-10'>Search</h1>
 
-      <SearchBar path='/search' />
+      <SearchBar path='/search' text='Search creators' />
 
       <div className='mt-14 flex flex-col gap-9'>
         {isGetUsersListLoading && <SearchSkeleton />}
