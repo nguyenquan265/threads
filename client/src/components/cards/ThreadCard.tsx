@@ -108,7 +108,7 @@ const ThreadCard = ({
           </div>
         </div>
 
-        {/* Delete thread */}
+        {/* Delete thread button */}
       </div>
 
       {!isComment && comments.length > 0 && (
