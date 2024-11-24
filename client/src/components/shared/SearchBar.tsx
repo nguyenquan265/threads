@@ -3,7 +3,10 @@ import { Input } from '../ui/input'
 import SearchIcon from '@/assets/search-gray.svg'
 import { useEffect, useState } from 'react'
 
-type Props = { path: string; text: string }
+type Props = {
+  path: string
+  text: string
+}
 
 const SearchBar = ({ path, text }: Props) => {
   const [search, setSearch] = useState<string>('')

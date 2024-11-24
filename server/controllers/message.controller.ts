@@ -5,7 +5,15 @@ import Message from '../models/message.model'
 import ApiError from '../utils/ApiError'
 import User from '../models/user.model'
 
-export const sendMessage = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+interface sendMessageRequest extends Request {
+  body: {
+    recipientId: string
+    senderId: string
+    message: string
+  }
+}
+
+export const sendMessage = asyncHandler(async (req: sendMessageRequest, res: Response, next: NextFunction) => {
   const { recipientId, senderId, message } = req.body
 
   let conversation = await Conversation.findOne({
@@ -45,10 +53,17 @@ export const sendMessage = asyncHandler(async (req: Request, res: Response, next
 
 export const getMessages = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { otherUserId } = req.params
-  const { userId } = req.body
+  // @ts-ignore
+  const { userId } = req.auth
+
+  const user = await User.findOne({ clerkId: userId })
+
+  if (!user) {
+    throw new ApiError(404, 'User not found')
+  }
 
   const conversation = await Conversation.findOne({
-    participants: { $all: [otherUserId, userId] }
+    participants: { $all: [otherUserId, user._id] }
   })
 
   if (!conversation) {
@@ -61,14 +76,21 @@ export const getMessages = asyncHandler(async (req: Request, res: Response, next
 })
 
 export const getConversations = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { userId } = req.body
+  // @ts-ignore
+  const { userId } = req.auth
+
+  const user = await User.findOne({ clerkId: userId })
+
+  if (!user) {
+    throw new ApiError(404, 'User not found')
+  }
 
   const conversations = await Conversation.find({
-    participants: userId
+    participants: user._id
   }).populate({
     path: 'participants',
     model: User,
-    select: '_id clerkid username image'
+    select: '_id clerkId username image'
   })
 
   conversations.forEach((conversation) => {
