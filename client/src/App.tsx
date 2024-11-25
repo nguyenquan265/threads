@@ -13,7 +13,6 @@ import ActivityPage from './pages/Root/Activity'
 import CommunitiesPage from './pages/Root/Communities'
 import SingleCommunityPage from './pages/Root/SingleCommunity'
 import ConversationsPage from './pages/Root/Conversations'
-import Chat from './components/shared/ChatBox'
 
 const router = createBrowserRouter([
   {

@@ -8,24 +8,31 @@ import User from '../models/user.model'
 interface sendMessageRequest extends Request {
   body: {
     recipientId: string
-    senderId: string
     message: string
   }
 }
 
 export const sendMessage = asyncHandler(async (req: sendMessageRequest, res: Response, next: NextFunction) => {
-  const { recipientId, senderId, message } = req.body
+  const { recipientId, message } = req.body
+  // @ts-ignore
+  const { userId } = req.auth
+
+  const sender = await User.findOne({ clerkId: userId })
+
+  if (!sender) {
+    throw new ApiError(404, 'User not found')
+  }
 
   let conversation = await Conversation.findOne({
-    participants: { $all: [recipientId, senderId] }
+    participants: { $all: [recipientId, sender._id] }
   })
 
   if (!conversation) {
     conversation = new Conversation({
-      participants: [recipientId, senderId],
+      participants: [recipientId, sender._id],
       lastMessage: {
         text: message,
-        sender: senderId
+        sender: sender._id
       }
     })
 
@@ -34,7 +41,7 @@ export const sendMessage = asyncHandler(async (req: sendMessageRequest, res: Res
 
   const newMessage = new Message({
     conversationId: conversation._id,
-    sender: senderId,
+    sender: sender._id,
     text: message
   })
 
@@ -43,7 +50,7 @@ export const sendMessage = asyncHandler(async (req: sendMessageRequest, res: Res
     conversation.updateOne({
       lastMessage: {
         text: message,
-        sender: senderId
+        sender: sender._id
       }
     })
   ])
@@ -70,7 +77,13 @@ export const getMessages = asyncHandler(async (req: Request, res: Response, next
     throw new ApiError(404, 'Conversation not found')
   }
 
-  const messages = await Message.find({ conversationId: conversation._id }).sort({ createdAt: 1 })
+  const messages = await Message.find({ conversationId: conversation._id })
+    .populate({
+      path: 'sender',
+      model: User,
+      select: '_id image name'
+    })
+    .sort({ createdAt: 1 })
 
   res.status(200).json(messages)
 })
@@ -95,7 +108,8 @@ export const getConversations = asyncHandler(async (req: Request, res: Response,
 
   conversations.forEach((conversation) => {
     conversation.participants = conversation.participants.filter(
-      (participant: { _id: string }) => participant._id.toString() !== userId
+      // @ts-ignore
+      (participant) => participant._id.toString() !== user._id.toString()
     )
   })
 

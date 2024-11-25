@@ -26,12 +26,12 @@ const ChatBox = ({ setSelectedUser, selectedUser }: Props) => {
           {isLoading && <div className='flex items-center justify-center text-light-1 mt-3'>Loading...</div>}
 
           {messages?.map((message) => (
-            <MessageBubble key={message._id} message={message} isSender={message.sender === selectedUser?._id} />
+            <MessageBubble key={message._id} message={message} isSender={message.sender._id === selectedUser?._id} />
           ))}
         </div>
       </ScrollArea>
 
-      <ChatInput />
+      <ChatInput otherUserObjectId={selectedUser._id} />
     </div>
   )
 }

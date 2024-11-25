@@ -42,7 +42,7 @@ export type Conversation = {
   participants: User[]
   lastMessage: {
     text: string
-    sender: User
+    sender: string
     seen: boolean
   }
   createdAt: string
@@ -52,7 +52,7 @@ export type Conversation = {
 export type Message = {
   _id: string
   conversationId: string
-  sender: User | string
+  sender: User
   text: string
   seen: boolean
   img: string

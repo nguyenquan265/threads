@@ -25,6 +25,6 @@ const conversationSchema = new Schema<IConversation>(
   { timestamps: true }
 )
 
-const Conversation = models.Community || model<IConversation>('Community', conversationSchema)
+const Conversation = models.Conversation || model<IConversation>('Conversation', conversationSchema)
 
 export default Conversation

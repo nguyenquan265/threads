@@ -1,5 +1,6 @@
 import { Message } from '@/type'
-import { Avatar, AvatarImage } from '../ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import formatDateString from '@/helpers/formatDateString'
 
 type Props = {
   message: Message
@@ -8,11 +9,11 @@ type Props = {
 
 const MessageBubble = ({ message, isSender }: Props) => {
   return (
-    <div className={`flex items-start gap-3 ${isSender ? 'justify-end' : ''}`}>
-      {!isSender && (
+    <div className={`flex items-start gap-3 ${!isSender ? 'justify-end' : ''}`}>
+      {isSender && (
         <Avatar>
-          <AvatarImage src={message.img} />
-          {/* <AvatarFallback>{message.sender[0]}</AvatarFallback> */}
+          <AvatarImage src={message.sender.image} />
+          <AvatarFallback>{message.sender.name}</AvatarFallback>
         </Avatar>
       )}
 
@@ -20,13 +21,13 @@ const MessageBubble = ({ message, isSender }: Props) => {
         <div className='bg-zinc-800 rounded-lg p-3'>
           <p className='text-light-1'>{message.text}</p>
         </div>
-        <div className='text-sm text-zinc-400 mt-1'>{message.createdAt}</div>
+        <div className='text-tiny-medium text-zinc-400 mt-1'>{formatDateString(message.createdAt)}</div>
       </div>
 
-      {isSender && (
+      {!isSender && (
         <Avatar>
-          <AvatarImage src={message.img} />
-          {/* <AvatarFallback>{message.sender[0]}</AvatarFallback> */}
+          <AvatarImage src={message.sender.image} />
+          <AvatarFallback>{message.sender.name}</AvatarFallback>
         </Avatar>
       )}
     </div>

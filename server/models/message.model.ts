@@ -26,6 +26,6 @@ const messageSchema = new Schema<IMessage>(
   { timestamps: true }
 )
 
-const Message = models.Community || model<IMessage>('Community', messageSchema)
+const Message = models.Message || model<IMessage>('Message', messageSchema)
 
 export default Message

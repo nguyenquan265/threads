@@ -13,7 +13,7 @@ type Props = {
 }
 
 const TestChatLeftSideBar = ({ setSelectedUser, selectedUser }: Props) => {
-  const [page, setPage] = useState(1)
+  // const [page, setPage] = useState(1)
   const [searchString, setSearchString] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState(searchString)
 
@@ -27,7 +27,7 @@ const TestChatLeftSideBar = ({ setSelectedUser, selectedUser }: Props) => {
     }
   }, [searchString])
 
-  const { data: result, isLoading: isGetUsersListLoading } = useGetUsers(debouncedSearch, page, 2)
+  const { data: result, isLoading: isGetUsersListLoading } = useGetUsers(debouncedSearch, 1, 2)
   const { data: userConversations, isLoading: isGetUserConversations } = useGetConversations()
 
   const filteredConversations = useMemo(() => {
@@ -39,7 +39,7 @@ const TestChatLeftSideBar = ({ setSelectedUser, selectedUser }: Props) => {
           <ChatCard
             key={conversation._id}
             user={otherUser}
-            text={conversation.lastMessage.text}
+            conversation={conversation}
             setSelectedUser={() => setSelectedUser(otherUser)}
           />
         )
@@ -75,7 +75,7 @@ const TestChatLeftSideBar = ({ setSelectedUser, selectedUser }: Props) => {
 
         {isGetUsersListLoading && <p className='text-light-1 flex justify-center mt-3'>Loading users...</p>}
 
-        {userConversations?.length == 0 && result && result.users.length > 0 && (
+        {(userConversations?.length == 0 || debouncedSearch) && result && result.users.length > 0 && (
           <>
             {result.users.map((user) => (
               <ChatCard key={user._id} user={user} setSelectedUser={() => setSelectedUser(user)} />
