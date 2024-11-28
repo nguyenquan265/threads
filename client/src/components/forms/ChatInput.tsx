@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem } from '../ui/form'
 import { useSendMessage } from '@/apis/MessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useUserContext } from '@/contexts/UserContext'
 
 const messageSchema = z.object({
   message: z.string(),
@@ -14,11 +15,8 @@ const messageSchema = z.object({
 
 export type MessageData = z.infer<typeof messageSchema>
 
-type Props = {
-  otherUserObjectId: string
-}
-
-const ChatInput = ({ otherUserObjectId }: Props) => {
+const ChatInput = () => {
+  const { selectedUser } = useUserContext()
   const { sendMessage, isPending } = useSendMessage()
   const form = useForm<MessageData>({
     resolver: zodResolver(messageSchema),
@@ -28,17 +26,21 @@ const ChatInput = ({ otherUserObjectId }: Props) => {
     }
   })
 
+  if (!selectedUser) {
+    return null
+  }
+
   const onSubmit = async (data: MessageData) => {
     await sendMessage({
       message: data.message,
-      recipientId: otherUserObjectId
+      recipientId: selectedUser._id
     })
 
     form.reset()
   }
 
   return (
-    <div className='p-4 border-t border-zinc-800'>
+    <div className='p-4 border-t border-zinc-800 max-h-[73px]'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='flex items-center gap-2'>

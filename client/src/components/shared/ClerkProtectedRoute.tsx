@@ -2,7 +2,7 @@ import Loader from '@/components/shared/Loader'
 import { useUser } from '@clerk/clerk-react'
 import { Navigate } from 'react-router-dom'
 
-const ProtectedRoute = ({ children }: any) => {
+const ClerkProtectedRoute = ({ children }: any) => {
   const { isSignedIn, isLoaded } = useUser()
 
   if (!isLoaded) {
@@ -16,4 +16,4 @@ const ProtectedRoute = ({ children }: any) => {
   return children
 }
 
-export default ProtectedRoute
+export default ClerkProtectedRoute

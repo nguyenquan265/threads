@@ -5,7 +5,10 @@ import RightSidebar from '@/components/shared/RightSidebar'
 import { ClerkProvider } from '@clerk/clerk-react'
 import { Outlet } from 'react-router-dom'
 import { dark } from '@clerk/themes'
-import ProtectedRoute from '@/components/shared/ProtectedRoute'
+import ClerkProtectedRoute from '@/components/shared/ClerkProtectedRoute'
+import AuthProtectedRoute from '@/components/shared/AuthProtectedRoute'
+import { SocketProvider } from '@/contexts/SocketContext'
+import { UserProvider } from '@/contexts/UserContext'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -22,23 +25,29 @@ const RootLayout = () => {
       signInUrl='/sign-in'
       signUpUrl='/sign-up'
     >
-      <ProtectedRoute>
-        <Header />
+      <ClerkProtectedRoute>
+        <AuthProtectedRoute>
+          <SocketProvider>
+            <UserProvider>
+              <Header />
 
-        <main className='flex flex-row'>
-          <LeftSidebar />
+              <main className='flex flex-row'>
+                <LeftSidebar />
 
-          <section className='main-container'>
-            <div className='w-full max-w-4xl h-full'>
-              <Outlet />
-            </div>
-          </section>
+                <section className='main-container'>
+                  <div className='w-full max-w-4xl h-full'>
+                    <Outlet />
+                  </div>
+                </section>
 
-          <RightSidebar />
-        </main>
+                <RightSidebar />
+              </main>
 
-        <Footer />
-      </ProtectedRoute>
+              <Footer />
+            </UserProvider>
+          </SocketProvider>
+        </AuthProtectedRoute>
+      </ClerkProtectedRoute>
     </ClerkProvider>
   )
 }

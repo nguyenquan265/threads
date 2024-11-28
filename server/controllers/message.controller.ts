@@ -4,6 +4,7 @@ import Conversation from '../models/conversation.model'
 import Message from '../models/message.model'
 import ApiError from '../utils/ApiError'
 import User from '../models/user.model'
+import { getRecipientSocketId, io } from '../socket'
 
 interface sendMessageRequest extends Request {
   body: {
@@ -55,6 +56,18 @@ export const sendMessage = asyncHandler(async (req: sendMessageRequest, res: Res
     })
   ])
 
+  const recipientSocketId = getRecipientSocketId(recipientId)
+  const senderSocketId = getRecipientSocketId(sender._id.toString())
+
+  if (recipientSocketId) {
+    io.to(recipientSocketId).emit('newMessage', newMessage)
+    io.to(recipientSocketId).emit('updateConversation', conversation)
+  }
+
+  if (senderSocketId) {
+    io.to(senderSocketId).emit('newMessage', newMessage)
+  }
+
   res.status(201).json(newMessage)
 })
 
@@ -85,7 +98,7 @@ export const getMessages = asyncHandler(async (req: Request, res: Response, next
     })
     .sort({ createdAt: 1 })
 
-  res.status(200).json(messages)
+  res.status(200).json({ messages, conversation })
 })
 
 export const getConversations = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {

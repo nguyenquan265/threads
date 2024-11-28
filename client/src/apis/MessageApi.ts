@@ -38,7 +38,7 @@ export const useGetConversations = () => {
 export const useGetMessages = (otherUserObjectId?: string) => {
   const { getToken } = useAuth()
 
-  const createGetMessagesRequest = async (): Promise<Message[]> => {
+  const createGetMessagesRequest = async (): Promise<{ messages: Message[]; conversation: Conversation }> => {
     const token = await getToken()
 
     const res = await fetch(`${API_BASE_URL}/api/v1/messages/${otherUserObjectId}`, {
@@ -92,7 +92,7 @@ export const useSendMessage = () => {
   const { mutateAsync: sendMessage, isPending } = useMutation({
     mutationFn: createSendMessageRequest,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['messages'] })
+      // queryClient.invalidateQueries({ queryKey: ['messages'] })
       queryClient.invalidateQueries({ queryKey: ['conversations'] })
     }
   })

@@ -52,7 +52,7 @@ export type Conversation = {
 export type Message = {
   _id: string
   conversationId: string
-  sender: User
+  sender: User | string
   text: string
   seen: boolean
   img: string

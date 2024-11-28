@@ -1,11 +1,12 @@
 import 'dotenv/config'
-import app from './app'
 import connectDB from './config/db'
 import cron from 'node-cron'
 import https from 'https'
+import { server } from './socket'
 
 const PORT = process.env.PORT || 3000
 const URL = process.env.SERVER_URL_HEALTH as string
+
 const ping = () => {
   https
     .get(URL, (res) => {
@@ -20,7 +21,7 @@ const ping = () => {
     })
 }
 
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
   await connectDB()
 
   console.log(`Server is running on port ${PORT}`)

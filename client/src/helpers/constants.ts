@@ -58,3 +58,8 @@ export const communityTabs = [
   { value: 'members', label: 'Members', icon: Members },
   { value: 'requests', label: 'Requests', icon: Requests }
 ]
+
+export const conversationsTabs = [
+  { value: 'chats', label: 'Chats', icon: 'https://img.icons8.com/windows/32/FFFFFF/chat.png' },
+  { value: 'users', label: 'Search', icon: User }
+]

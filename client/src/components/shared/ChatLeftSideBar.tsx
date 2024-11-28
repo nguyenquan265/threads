@@ -1,83 +1,31 @@
-import { useGetConversations } from '@/apis/MessageApi'
-import { useEffect, useState } from 'react'
-import { ScrollArea } from '../ui/scroll-area'
-import { useGetUsers } from '@/apis/UserApi'
-import SearchIcon from '@/assets/search-gray.svg'
-import { Input } from '../ui/input'
-import { User } from '@/type'
-import ChatCard from '../cards/ChatCard'
+import { useUserContext } from '@/contexts/UserContext'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
+import { conversationsTabs } from '@/helpers/constants'
+import ChatList from './ChatList'
+import ChatSearchList from './ChatSearchList'
 
-type Props = {
-  setSelectedUser: (user: User) => void
-  selectedUser?: User
-}
-
-const ChatLeftSideBar = ({ setSelectedUser, selectedUser }: Props) => {
-  const [page, setPage] = useState(1)
-  const [searchString, setSearchString] = useState('')
-  const [debouncedSearch, setDebouncedSearch] = useState(searchString)
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(searchString)
-    }, 500)
-
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [searchString])
-
-  const { data: result, isLoading: isGetUsersListLoading } = useGetUsers(debouncedSearch, page, 2)
-  const { data: userConversations, isLoading: isGetUserConversations } = useGetConversations()
-
-  if (isGetUserConversations) {
-    return null
-  }
+const ChatLeftSideBar = () => {
+  const { selectedUser } = useUserContext()
 
   return (
-    <aside
-      className={`w-full md:w-64 border-r border-zinc-800 flex-shrink-0 ${selectedUser && 'max-md:hidden'} md:block`}
-    >
-      <div className='p-4 border-b border-zinc-800'>
-        <div className='searchbar'>
-          <img src={SearchIcon} alt='search' width={24} height={24} className='object-contain' />
+    <aside className={`w-full md:w-64 border-r border-zinc-800 ${selectedUser && 'max-md:hidden'} md:block`}>
+      <Tabs defaultValue='chats' className='w-full h-full'>
+        <TabsList className='tab'>
+          {conversationsTabs.map((tab) => (
+            <TabsTrigger key={tab.label} value={tab.value} className='tab'>
+              <p>{tab.label}</p>
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-          <Input
-            id='text'
-            value={searchString}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchString(e.target.value)}
-            placeholder='Search users'
-            className='no-focus searchbar_input'
-          />
-        </div>
-      </div>
+        <TabsContent value='chats' className='w-full text-light-1'>
+          <ChatList />
+        </TabsContent>
 
-      <ScrollArea>
-        {!debouncedSearch &&
-          userConversations &&
-          userConversations.map((conversation) => {
-            const otherUser = conversation.participants[0]
-
-            return (
-              <ChatCard
-                key={conversation._id}
-                user={otherUser}
-                text={conversation.lastMessage.text}
-                setSelectedUser={() => setSelectedUser(otherUser)}
-              />
-            )
-          })}
-
-        {isGetUsersListLoading && <p>loading...</p>}
-
-        {userConversations?.length == 0 && result && result.users.length > 0 && (
-          <>
-            {result.users.map((user) => (
-              <ChatCard key={user._id} user={user} setSelectedUser={() => setSelectedUser(user)} />
-            ))}
-          </>
-        )}
-      </ScrollArea>
+        <TabsContent value='users' className='w-full text-light-1'>
+          <ChatSearchList />
+        </TabsContent>
+      </Tabs>
     </aside>
   )
 }

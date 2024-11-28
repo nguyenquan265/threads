@@ -1,19 +1,20 @@
 import { Message } from '@/type'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Avatar, AvatarImage } from '../ui/avatar'
 import formatDateString from '@/helpers/formatDateString'
 
 type Props = {
   message: Message
   isSender: boolean
+  selectedUserImage: string
+  currentUserImage: string
 }
 
-const MessageBubble = ({ message, isSender }: Props) => {
+const MessageBubble = ({ message, isSender, selectedUserImage, currentUserImage }: Props) => {
   return (
     <div className={`flex items-start gap-3 ${!isSender ? 'justify-end' : ''}`}>
       {isSender && (
         <Avatar>
-          <AvatarImage src={message.sender.image} />
-          <AvatarFallback>{message.sender.name}</AvatarFallback>
+          <AvatarImage src={selectedUserImage} />
         </Avatar>
       )}
 
@@ -26,8 +27,7 @@ const MessageBubble = ({ message, isSender }: Props) => {
 
       {!isSender && (
         <Avatar>
-          <AvatarImage src={message.sender.image} />
-          <AvatarFallback>{message.sender.name}</AvatarFallback>
+          <AvatarImage src={currentUserImage} />
         </Avatar>
       )}
     </div>
