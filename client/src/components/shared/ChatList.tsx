@@ -15,8 +15,6 @@ const ChatList = () => {
   useEffect(() => {
     if (socket) {
       socket.on('updateConversation', (newConversation) => {
-        console.log('Conversation: ', newConversation)
-
         if (!newConversation) {
           return
         }

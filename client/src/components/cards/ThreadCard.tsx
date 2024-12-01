@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import GrayHeart from '@/assets/heart-gray.svg'
 import Reply from '@/assets/reply.svg'
 import Repost from '@/assets/repost.svg'
-import Share from '@/assets/share.svg'
 import formatDateString from '@/helpers/formatDateString'
 
 type Props = {
@@ -84,14 +83,6 @@ const ThreadCard = ({
                 <img
                   src={Repost}
                   alt='repost'
-                  width={24}
-                  height={24}
-                  className='cursor-pointer object-contain'
-                  loading='lazy'
-                />
-                <img
-                  src={Share}
-                  alt='share'
                   width={24}
                   height={24}
                   className='cursor-pointer object-contain'

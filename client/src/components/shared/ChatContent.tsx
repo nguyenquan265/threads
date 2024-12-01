@@ -2,7 +2,7 @@ import { useUserContext } from '@/contexts/UserContext'
 import MessageBubble from './MessageBubble'
 import { useSocketContext } from '@/contexts/SocketContext'
 import { useGetMessages } from '@/apis/MessageApi'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Message, User } from '@/type'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -15,6 +15,7 @@ const ChatContent = ({ currentUser }: Props) => {
   const { socket, setSocket } = useSocketContext()
   const { data: result, isLoading } = useGetMessages(selectedUser?._id)
   const queryClient = useQueryClient()
+  const scrollRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (socket) {
@@ -43,12 +44,20 @@ const ChatContent = ({ currentUser }: Props) => {
     }
   }, [socket, setSocket, result])
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView(false)
+  }, [])
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView(false)
+  }, [result?.messages])
+
   if (!selectedUser) {
     return null
   }
 
   return (
-    <div className='space-y-4'>
+    <div ref={scrollRef} className='space-y-4 h-full overflow-y-auto'>
       {isLoading && <div className='flex items-center justify-center text-light-1 mt-3'>Loading...</div>}
 
       {(result?.messages || []).map((message) => (
