@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 type Props = {
   user: User
-  isOnline: boolean
+  isOnline?: boolean
   conversation?: Conversation
   setSelectedUser: (user: User) => void
 }
