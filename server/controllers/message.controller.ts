@@ -10,11 +10,12 @@ interface sendMessageRequest extends Request {
   body: {
     recipientId: string
     message: string
+    image: string
   }
 }
 
 export const sendMessage = asyncHandler(async (req: sendMessageRequest, res: Response, next: NextFunction) => {
-  const { recipientId, message } = req.body
+  const { recipientId, message, image } = req.body
   // @ts-ignore
   const { userId } = req.auth
 
@@ -43,7 +44,8 @@ export const sendMessage = asyncHandler(async (req: sendMessageRequest, res: Res
   const newMessage = new Message({
     conversationId: conversation._id,
     sender: sender._id,
-    text: message
+    text: message,
+    img: image
   })
 
   await Promise.all([

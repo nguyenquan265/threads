@@ -19,8 +19,12 @@ const MessageBubble = ({ message, isSender, selectedUserImage, currentUserImage 
       )}
 
       <div className='max-w-[50%]'>
-        <div className='bg-zinc-800 rounded-lg p-3'>
-          <p className='text-light-1'>{message.text}</p>
+        <div className='bg-zinc-800 rounded-lg p-2'>
+          {message.img ? (
+            <img src={message.img} alt='message img' className='rounded-lg' loading='lazy' />
+          ) : (
+            <p className='text-light-1'>{message.text}</p>
+          )}
         </div>
         <div className='text-tiny-medium text-zinc-400 mt-1'>{formatDateString(message.createdAt)}</div>
       </div>
